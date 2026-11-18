@@ -1,0 +1,65 @@
+# Customer assessor stays crawlable. The sales brief does not.
+# /sales.html applies on a custom domain. The longer path applies on GitHub project pages.
+User-agent: *
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: GPTBot
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: ChatGPT-User
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: OAI-SearchBot
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: Google-Extended
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: CCBot
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: ClaudeBot
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: anthropic-ai
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: PerplexityBot
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: Bytespider
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: Amazonbot
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: Applebot-Extended
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: meta-externalagent
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: FacebookBot
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: cohere-ai
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html
+
+User-agent: Diffbot
+Disallow: /sales.html
+Disallow: /AIOpsAssessor/sales.html

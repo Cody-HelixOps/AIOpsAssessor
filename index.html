@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMC Helix AIOps Maturity Assessor</title>
+    <meta name="description" content="A 2-minute assessment of your AIOps maturity: observability, event noise, service context, root cause, remediation, and agentic AI readiness.">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bmc: {
+                            orange: '#FF5C28',
+                            orangeHover: '#E04B1D',
+                            blue: '#007AE2',
+                            blueHover: '#0066BE'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons via CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script data-goatcounter="https://helixaiopsassessor.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+
+    <style>
+        /* Custom Animations */
+        .fade-in { animation: fadeIn 0.5s ease-in forwards; }
+        .slide-in { animation: slideIn 0.5s ease-out forwards; }
+        .zoom-in { animation: zoomIn 0.5s ease-out forwards; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        .scale-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 9999px;
+            background: linear-gradient(to right, #334155, #007AE2);
+            outline: none;
+            cursor: pointer;
+        }
+        .scale-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #FF5C28;
+            border: 3px solid #fff;
+            box-shadow: 0 0 20px rgba(255, 92, 40, 0.45);
+            cursor: grab;
+            transition: transform 0.15s ease;
+        }
+        .scale-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        .scale-slider::-moz-range-thumb {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #FF5C28;
+            border: 3px solid #fff;
+            box-shadow: 0 0 20px rgba(255, 92, 40, 0.45);
+            cursor: grab;
+        }
+        .scale-slider::-moz-range-track {
+            height: 8px;
+            border-radius: 9999px;
+            background: #334155;
+        }
+
+        .maturity-ring {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        .maturity-ring-progress {
+            transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .maturity-spectrum-fill {
+            transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .maturity-count {
+            animation: countUp 0.6s ease-out both;
+        }
+
+        .wedge-segment {
+            transition: opacity 0.35s ease, filter 0.35s ease;
+            cursor: default;
+        }
+        .wedge-segment.is-past {
+            opacity: 0.45;
+        }
+        .wedge-segment.is-current {
+            filter: drop-shadow(0 0 10px rgba(255, 92, 40, 0.55));
+        }
+        .wedge-segment.is-ahead {
+            opacity: 0.28;
+        }
+        .target-pillar {
+            animation: optionIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        .product-tile {
+            transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+        }
+        .product-tile:hover {
+            transform: translateY(-2px);
+        }
+
+        .quiz-option {
+            animation: optionIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+            position: relative;
+            overflow: hidden;
+        }
+        .quiz-option::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,122,226,0.12), transparent 55%);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
+        .quiz-option:hover::before,
+        .quiz-option:focus-visible::before {
+            opacity: 1;
+        }
+        .quiz-option.selected {
+            border-color: rgba(0, 122, 226, 0.8) !important;
+            background: rgba(0, 122, 226, 0.18) !important;
+            transform: scale(1.02);
+            box-shadow: 0 0 0 1px rgba(0,122,226,0.35), 0 18px 40px rgba(0,122,226,0.18);
+        }
+        .quiz-option.selected .quiz-letter {
+            background: #007AE2;
+            color: white;
+        }
+        .quiz-option.dimmed {
+            opacity: 0.35;
+            transform: scale(0.98);
+        }
+        @keyframes optionIn {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes questionSwap {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .question-swap {
+            animation: questionSwap 0.4s ease-out both;
+        }
+        .quiz-step {
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .quiz-step.active {
+            transform: scale(1.08);
+            box-shadow: 0 0 16px rgba(255, 92, 40, 0.45);
+        }
+        .maturity-dots span {
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .quiz-option:hover .maturity-dots span.active,
+        .quiz-option:focus-visible .maturity-dots span.active {
+            transform: scale(1.15);
+        }
+        .slider-pulse {
+            animation: sliderPulse 0.35s ease;
+        }
+        @keyframes sliderPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-50 font-sans selection:bg-bmc-blue/30 min-h-screen">
+
+    <!-- Global Navigation -->
+    <nav class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="resetApp()">
+                <!-- Helixops Logo Component -->
+                <div class="flex items-center space-x-3">
+                    <img id="nav-logo" src="bmc-helix-logo.svg" alt="BMC Helix" class="h-8 w-auto" onerror="handleImageError(this)">
+                    <div id="nav-logo-fallback" class="hidden w-8 h-8 bg-gradient-to-br from-bmc-blue to-bmc-orange rounded-md flex items-center justify-center shadow-lg">
+                        <span class="text-white font-black text-sm">H</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold leading-none">AIOps Maturity Assessor</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-sm font-medium text-slate-500 hidden sm:block">
+                Helix AIOps Maturity Model
+            </div>
+        </div>
+    </nav>
+
+    <main class="pb-20">
+        <!-- LANDING VIEW -->
+        <section id="view-landing" class="view-section active fade-in zoom-in">
+            <div class="flex flex-col items-center justify-center min-h-[80vh] text-center px-4">
+                <div class="mb-8">
+                    <img id="main-logo" src="bmc-helix-logo.svg" alt="BMC Helix" class="h-14 w-auto mx-auto" onerror="handleImageError(this, 'main-logo-fallback')">
+                    <div id="main-logo-fallback" class="hidden w-16 h-16 bg-gradient-to-br from-bmc-blue to-bmc-orange rounded-md flex items-center justify-center shadow-lg mx-auto">
+                        <span class="text-white font-black text-3xl">H</span>
+                    </div>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight mt-6">
+                    Are your IT operations a <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-bmc-orange">war room of alerts</span> <br class="hidden md:block"/> or a <span class="text-transparent bg-clip-text bg-gradient-to-r from-bmc-blue to-emerald-400">self-healing service?</span>
+                </h1>
+                <p class="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
+                    Take this 2-minute assessment to discover your current AIOps Maturity Level and uncover the path to Level 10 autonomous operations.
+                </p>
+                <button onclick="startQuiz()" class="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white bg-bmc-blue rounded-full overflow-hidden transition-all hover:scale-105 hover:bg-bmc-blueHover hover:shadow-[0_0_40px_rgba(0,122,226,0.5)] focus:outline-none focus:ring-4 focus:ring-bmc-blue/50 z-10 cursor-pointer w-full max-w-[300px] md:w-auto mt-4">
+                    <span class="mr-2">Start the Assessment</span>
+                    <i data-lucide="play" class="w-5 h-5 fill-current"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ VIEW -->
+        <section id="view-quiz" class="view-section slide-in">
+            <div class="max-w-4xl mx-auto w-full px-4 py-10 md:py-14">
+                <div class="mb-8">
+                    <div class="flex items-center justify-between gap-4 mb-4">
+                        <div>
+                            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-bmc-orange mb-1">Assessment</p>
+                            <p id="quiz-progress-text" class="text-sm font-medium text-slate-300">Question 1 of 6</p>
+                        </div>
+                        <div class="text-right">
+                            <p id="quiz-progress-percent" class="text-sm font-bold text-white">0%</p>
+                            <p class="text-[11px] uppercase tracking-wider text-slate-500">Complete</p>
+                        </div>
+                    </div>
+                    <div id="quiz-steps" class="flex gap-2 mb-3"></div>
+                    <div class="w-full bg-slate-800/80 rounded-full h-2 overflow-hidden border border-slate-700/60">
+                        <div id="quiz-progress-bar" class="bg-gradient-to-r from-bmc-orange to-bmc-blue h-2 rounded-full transition-all duration-500 ease-out shadow-[0_0_12px_rgba(255,92,40,0.45)]" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div id="quiz-card" class="relative bg-slate-800/60 border border-slate-700 rounded-3xl p-6 md:p-10 backdrop-blur-sm shadow-xl overflow-hidden">
+                    <div id="quiz-accent-glow" class="pointer-events-none absolute -top-24 -right-16 w-72 h-72 rounded-full blur-[90px] opacity-30 bg-bmc-blue"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-start gap-4 mb-8">
+                            <div id="quiz-icon-wrap" class="flex-shrink-0 w-14 h-14 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-inner">
+                                <i id="quiz-icon" data-lucide="help-circle" class="w-7 h-7 text-bmc-blue"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <span id="quiz-tag" class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-bmc-blue/15 text-bmc-blue border border-bmc-blue/20 mb-3">Topic</span>
+                                <h2 id="quiz-question-text" class="text-2xl md:text-3xl font-bold text-white leading-snug">
+                                    Loading...
+                                </h2>
+                            </div>
+                        </div>
+                        <div id="quiz-options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Options injected here via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALCULATING VIEW -->
+        <section id="view-calculating" class="view-section fade-in">
+            <div class="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
+                <div class="relative w-24 h-24 mb-8">
+                    <div class="absolute inset-0 border-4 border-slate-800 rounded-full"></div>
+                    <div class="absolute inset-0 border-4 border-bmc-orange rounded-full border-t-transparent animate-spin"></div>
+                    <img src="bmc-helix-logo.svg" class="absolute inset-0 m-auto h-6 w-auto animate-pulse" onerror="this.style.display='none'">
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-2">Analyzing Your Operations...</h2>
+                <p class="text-slate-400">Mapping your responses to the Helix AIOps Maturity Model.</p>
+            </div>
+        </section>
+
+        <!-- RESULTS VIEW -->
+        <section id="view-results" class="view-section zoom-in">
+            <div class="max-w-4xl mx-auto w-full px-4 py-12">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-4">Your Maturity Assessment Results</h2>
+                    <p class="text-slate-400">Based on your observability, correlation, and automation practices.</p>
+                </div>
+
+                <div class="bg-slate-800 border border-slate-700 rounded-3xl p-8 md:p-12 mb-8 relative overflow-hidden shadow-2xl">
+                    <div id="results-glow" class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 blur-[100px] opacity-20"></div>
+                    
+                    <div class="relative z-10 flex flex-col items-center text-center">
+                        <span class="text-sm font-bold tracking-widest uppercase text-slate-400 mb-6">Maturity Level</span>
+
+                        <div class="relative w-52 h-52 mb-8">
+                            <svg viewBox="0 0 120 120" class="w-full h-full">
+                                <circle cx="60" cy="60" r="52" fill="none" stroke="#1e293b" stroke-width="10" />
+                                <circle
+                                    id="maturity-ring"
+                                    class="maturity-ring maturity-ring-progress"
+                                    cx="60" cy="60" r="52"
+                                    fill="none"
+                                    stroke="#FF5C28"
+                                    stroke-width="10"
+                                    stroke-linecap="round"
+                                    stroke-dasharray="326.73"
+                                    stroke-dashoffset="326.73"
+                                />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center maturity-count">
+                                <div class="flex items-baseline">
+                                    <span id="results-level" class="text-6xl font-black text-white leading-none">?</span>
+                                    <span class="text-xl text-slate-500 font-bold ml-1">/10</span>
+                                </div>
+                                <span id="results-gap" class="mt-2 text-xs font-semibold uppercase tracking-wider text-slate-400"></span>
+                            </div>
+                        </div>
+
+                        <h3 id="results-title" class="text-2xl font-bold text-white mb-3">Loading...</h3>
+                        <p id="results-desc" class="text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed mb-10">...</p>
+
+                        <div class="w-full max-w-xl">
+                            <div class="relative h-3 rounded-full bg-slate-900 border border-slate-700 overflow-hidden">
+                                <div id="maturity-spectrum-fill" class="maturity-spectrum-fill absolute inset-y-0 left-0 rounded-full w-0"></div>
+                            </div>
+                            <div class="flex justify-between mt-3 text-[11px] sm:text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                <span>Reactive</span>
+                                <span>Proactive</span>
+                                <span>Autonomous</span>
+                            </div>
+                            <div id="results-ticks" class="mt-6 grid grid-cols-10 gap-1.5"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 flex-wrap">
+                    <button onclick="showSolutions()" class="w-full sm:w-auto px-8 py-4 font-bold text-white bg-bmc-blue rounded-full hover:bg-bmc-blueHover transition-all shadow-lg hover:shadow-bmc-blue/30 flex items-center justify-center group">
+                        See How to Reach Level 10
+                        <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                    <button onclick="shareResults()" data-goatcounter-click="share-results" data-goatcounter-title="Share Results" class="w-full sm:w-auto px-8 py-4 font-bold text-white bg-slate-800 border border-slate-600 rounded-full hover:bg-slate-700 hover:border-bmc-blue/50 transition-all flex items-center justify-center">
+                        <i data-lucide="mail" class="w-4 h-4 mr-2"></i>
+                        Share Results
+                    </button>
+                    <button onclick="resetApp()" class="w-full sm:w-auto px-8 py-4 font-bold text-slate-300 bg-slate-800 rounded-full hover:bg-slate-700 hover:text-white transition-all flex items-center justify-center">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4 mr-2"></i>
+                        Retake Assessment
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOLUTIONS VIEW -->
+        <section id="view-solutions" class="view-section slide-in">
+            <div class="max-w-6xl mx-auto w-full px-4 py-10 md:py-14">
+                <div class="text-center mb-10 md:mb-12">
+                    <div class="inline-flex items-center justify-center px-3 py-1.5 bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 rounded-full mb-5">
+                        <i data-lucide="target" class="w-4 h-4 mr-2"></i>
+                        <span class="font-bold tracking-wide uppercase text-xs">The Target State</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
+                        Path to <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Level 10</span>
+                    </h2>
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto">
+                        Close the gap with a connected BMC Helix ecosystem — observe the whole service, know what matters, then act autonomously.
+                    </p>
+                </div>
+
+                <!-- Maturity wedge + journey -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12 items-stretch">
+                    <div class="relative rounded-3xl border border-slate-700 bg-slate-800/60 p-6 md:p-8 overflow-hidden">
+                        <div class="absolute -bottom-16 -left-10 w-56 h-56 bg-emerald-500/20 blur-[90px] pointer-events-none"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-5">
+                                <h3 class="text-sm font-bold uppercase tracking-[0.18em] text-slate-400">Maturity Model</h3>
+                                <span id="wedge-you-badge" class="text-xs font-bold uppercase tracking-wider text-bmc-orange bg-bmc-orange/15 border border-bmc-orange/30 px-2.5 py-1 rounded-full">You: L?</span>
+                            </div>
+                            <div id="maturity-wedge" class="w-full"></div>
+                            <div class="mt-5 flex flex-wrap gap-3 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-500/80"></span>Siloed</span>
+                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500/80"></span>Consolidated</span>
+                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-bmc-blue/80"></span>Correlated</span>
+                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-cyan-400/80"></span>Predictive</span>
+                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-400/90"></span>Level 10</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rounded-3xl border border-slate-700 bg-slate-800/60 p-6 md:p-8 flex flex-col justify-center">
+                        <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-3">Your journey</p>
+                        <h3 id="solutions-journey-title" class="text-2xl md:text-3xl font-bold text-white mb-3">Moving toward autonomy</h3>
+                        <p id="solutions-journey-desc" class="text-slate-400 leading-relaxed mb-6">
+                            Each capability layer below compounds the last — from seeing the whole service, to knowing what matters, to fixing it without a war room.
+                        </p>
+                        <div id="solutions-journey-steps" class="space-y-3"></div>
+                    </div>
+                </div>
+
+                <div class="flex items-end justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Capability stack</h3>
+                        <p class="text-sm text-slate-500 mt-1">Three layers. One closed loop.</p>
+                    </div>
+                </div>
+
+                <div id="solutions-container" class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+                    <!-- Pillars injected here via JS -->
+                </div>
+
+                <div class="text-center bg-gradient-to-br from-[#00509a]/40 to-slate-900 border border-bmc-blue/30 rounded-3xl p-8 md:p-10 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-bmc-orange blur-[100px] opacity-20"></div>
+                    <h3 class="text-2xl font-bold text-white mb-3 relative z-10">Ready to close the loop?</h3>
+                    <p class="text-slate-400 mb-7 max-w-xl mx-auto relative z-10">
+                        Stop chasing alert storms. Turn observability into autonomous operations with BMC Helix.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3 relative z-10">
+                        <button onclick="window.open('https://www.helixops.ai', '_blank')" class="px-7 py-3 font-bold text-white bg-bmc-orange rounded-full hover:bg-bmc-orangeHover transition-all shadow-[0_0_20px_rgba(255,92,40,0.3)]">
+                            Visit helixops.ai
+                        </button>
+                        <button onclick="window.open('https://www.helixops.ai/forms/contact-us.html', '_blank')" data-goatcounter-click="contact-sales" data-goatcounter-title="Contact BMC Helix Sales" class="px-7 py-3 font-bold text-white bg-bmc-blue rounded-full hover:bg-bmc-blueHover transition-all">
+                            Contact BMC Helix Sales
+                        </button>
+                        <button onclick="shareResults()" data-goatcounter-click="share-results" data-goatcounter-title="Share Results" class="px-7 py-3 font-bold text-white bg-slate-800 border border-slate-600 rounded-full hover:bg-slate-700 hover:border-bmc-blue/50 transition-all inline-flex items-center justify-center">
+                            <i data-lucide="mail" class="w-4 h-4 mr-2"></i>
+                            Share Results
+                        </button>
+                        <button onclick="resetApp()" class="px-7 py-3 font-bold text-slate-300 bg-slate-800 border border-slate-700 rounded-full hover:bg-slate-700 hover:text-white transition-all">
+                            Retake Assessment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Application Logic -->
+    <script>
+        // --- DATA ---
+        const QUESTIONS = [
+            {
+                tag: "Observability",
+                icon: "radar",
+                accent: "blue",
+                question: "How do you monitor your infrastructure, applications, and cloud?",
+                options: [
+                    { text: "Each team has its own tools and consoles; nobody sees the whole picture.", points: 1 },
+                    { text: "Events land in a consolidated console, with static thresholds we tune by hand.", points: 2 },
+                    { text: "Full-stack observability (metrics, logs, traces) with dynamic baselines, but not tied to business services.", points: 3 },
+                    { text: "Unified observability across the hybrid estate, mapped to business services, with anomaly detection and predictive alerts.", points: 4 }
+                ]
+            },
+            {
+                tag: "Event Noise",
+                icon: "bell-ring",
+                accent: "orange",
+                question: "On a bad day, how do your operators deal with alerts?",
+                options: [
+                    { text: "Alert storms. Thousands of events, and most get ignored.", points: 1 },
+                    { text: "Dedup and filter rules we write and maintain by hand.", points: 2 },
+                    { text: "ML correlation groups events into situations, but triage is still manual.", points: 3 },
+                    { text: "Noise is cut by 90%+; situations with probable cause are raised before users notice.", points: 4 }
+                ]
+            },
+            {
+                tag: "Service Context",
+                icon: "network",
+                accent: "cyan",
+                question: "When an alert fires, do you know which business service is affected?",
+                options: [
+                    { text: "No. We find out when users call the service desk.", points: 1 },
+                    { text: "We check a static CMDB that is often out of date.", points: 2 },
+                    { text: "Discovered topology and service models stay current, but impact is assessed manually.", points: 3 },
+                    { text: "Dynamic service models score health and business impact in real time.", points: 4 }
+                ]
+            },
+            {
+                tag: "Root Cause",
+                icon: "search-check",
+                accent: "violet",
+                question: "When a major incident hits, how do you find the root cause?",
+                options: [
+                    { text: "A war-room bridge call where every team proves it isn't them.", points: 1 },
+                    { text: "Runbooks and tribal knowledge. It usually takes hours.", points: 2 },
+                    { text: "Probable-cause analysis and change correlation narrow it down quickly.", points: 3 },
+                    { text: "GenAI explains the situation, probable cause, related changes, and the recommended fix in minutes.", points: 4 }
+                ]
+            },
+            {
+                tag: "Remediation",
+                icon: "wrench",
+                accent: "emerald",
+                question: "Once you know the cause, how does the fix happen?",
+                options: [
+                    { text: "An engineer logs in and fixes it by hand; the ticket is updated later, if at all.", points: 1 },
+                    { text: "Some scripts, run ad hoc. Incidents are logged manually.", points: 2 },
+                    { text: "Event-triggered automation with approval steps; incidents are auto-created.", points: 3 },
+                    { text: "Closed loop: known issues auto-remediate, and incidents and changes are created, updated, and closed automatically.", points: 4 }
+                ]
+            },
+            {
+                type: "slider",
+                tag: "Agentic AI Readiness",
+                icon: "bot",
+                accent: "orange",
+                question: "How ready are your operations for agentic AI (e.g. BMC HelixGPT agents) that investigate and act on incidents?",
+                options: [
+                    {
+                        label: "Siloed",
+                        text: "Our data is fragmented across tools and teams. An AI agent would have nothing trustworthy to reason over.",
+                        points: 1
+                    },
+                    {
+                        label: "Curious",
+                        text: "We're interested in GenAI, but monitoring, topology, and tickets still live in separate silos.",
+                        points: 2
+                    },
+                    {
+                        label: "Grounding",
+                        text: "Data is consolidated with some service context. AI could summarize incidents, but it couldn't safely act on them.",
+                        points: 3
+                    },
+                    {
+                        label: "Piloting",
+                        text: "Service-aware correlation and automation exist, and we're evaluating agentic root cause and guided remediation (e.g. BMC HelixGPT).",
+                        points: 4
+                    },
+                    {
+                        label: "Agent-ready",
+                        text: "Trusted service models, low-noise situations, and governed automation let AI agents investigate and remediate with humans on the exceptions.",
+                        points: 5
+                    }
+                ]
+            }
+        ];
+
+        const MATURITY_LABELS = {
+            1: "Siloed",
+            2: "Consolidated",
+            3: "Correlated",
+            4: "Autonomous",
+            5: "Agent-ready"
+        };
+
+        const ACCENT_STYLES = {
+            blue: {
+                glow: "bg-bmc-blue",
+                text: "text-bmc-blue",
+                chip: "bg-bmc-blue/15 text-bmc-blue border-bmc-blue/25",
+                iconBg: "bg-bmc-blue/10 border-bmc-blue/30"
+            },
+            orange: {
+                glow: "bg-bmc-orange",
+                text: "text-bmc-orange",
+                chip: "bg-bmc-orange/15 text-bmc-orange border-bmc-orange/25",
+                iconBg: "bg-bmc-orange/10 border-bmc-orange/30"
+            },
+            cyan: {
+                glow: "bg-cyan-400",
+                text: "text-cyan-400",
+                chip: "bg-cyan-400/15 text-cyan-300 border-cyan-400/25",
+                iconBg: "bg-cyan-400/10 border-cyan-400/30"
+            },
+            violet: {
+                glow: "bg-violet-400",
+                text: "text-violet-300",
+                chip: "bg-violet-400/15 text-violet-300 border-violet-400/25",
+                iconBg: "bg-violet-400/10 border-violet-400/30"
+            },
+            emerald: {
+                glow: "bg-emerald-400",
+                text: "text-emerald-400",
+                chip: "bg-emerald-400/15 text-emerald-300 border-emerald-400/25",
+                iconBg: "bg-emerald-400/10 border-emerald-400/30"
+            }
+        };
+
+        const HELIX_SOLUTIONS = [
+            {
+                category: "See the whole service",
+                stage: "Observe",
+                levelRange: "L1 → L4",
+                blurb: "One view of the hybrid estate, mapped to business services.",
+                icon: "radar",
+                accent: "border-bmc-blue/40",
+                iconColor: "text-bmc-blue",
+                iconBg: "bg-bmc-blue/10 border-bmc-blue/30",
+                items: [
+                    { title: "BMC Helix Discovery", desc: "Discover the hybrid estate and keep service topology current automatically.", url: "https://www.helixops.ai/products/bmc-helix-discovery.html" },
+                    { title: "BMC Helix Operations Management", desc: "One event and metric stream with dynamic baselines and anomaly detection.", url: "https://www.helixops.ai/products/aiops.html" }
+                ]
+            },
+            {
+                category: "Know what matters",
+                stage: "Analyze",
+                levelRange: "L5 → L7",
+                blurb: "Cut noise into situations. Explain the cause by service impact.",
+                icon: "brain",
+                accent: "border-violet-400/40",
+                iconColor: "text-violet-300",
+                iconBg: "bg-violet-400/10 border-violet-400/30",
+                items: [
+                    { title: "BMC Helix AIOps", desc: "Correlate events into situations, score service health, and pinpoint probable cause.", url: "https://www.helixops.ai/products/aiops.html" },
+                    { title: "BMC HelixGPT", desc: "Explain situations, related changes, and next-best actions in natural language.", url: "https://www.helixops.ai/products/helixgpt.html" },
+                    { title: "BMC Helix ServiceOps", desc: "Unite operations and service management on shared change and incident insight.", url: "https://www.helixops.ai/it-solutions/serviceops.html" }
+                ]
+            },
+            {
+                category: "Close the loop",
+                stage: "Act",
+                levelRange: "L8 → L10",
+                blurb: "Remediate known issues and keep tickets current without handoffs.",
+                icon: "zap",
+                accent: "border-bmc-orange/40",
+                iconColor: "text-bmc-orange",
+                iconBg: "bg-bmc-orange/10 border-bmc-orange/30",
+                items: [
+                    { title: "Intelligent Automation", desc: "Trigger governed remediation straight from situations and probable cause.", url: "https://www.helixops.ai/info/intelligent-automation.html" },
+                    { title: "Automation for Servers", desc: "Run fixes, configuration, and compliance at scale across hybrid estates.", url: "https://www.helixops.ai/products/truesight-server-automation.html" },
+                    { title: "BMC Helix ITSM", desc: "Auto-create, update, and close incidents and changes as work completes.", url: "https://www.helixops.ai/products/bmc-helix-itsm.html" },
+                    { title: "Innovation Studio", desc: "Low-code workflows tailored to your operating model.", url: "https://www.helixops.ai/products/bmc-helix-itsm.html" }
+                ]
+            }
+        ];
+
+        const MATURITY_WEDGES = [
+            { id: 1, label: "Siloed", sub: "L1–2", min: 1, max: 2, color: "#ef4444" },
+            { id: 2, label: "Consolidated", sub: "L3–4", min: 3, max: 4, color: "#f59e0b" },
+            { id: 3, label: "Correlated", sub: "L5–6", min: 5, max: 6, color: "#007AE2" },
+            { id: 4, label: "Predictive", sub: "L7–8", min: 7, max: 8, color: "#22d3ee" },
+            { id: 5, label: "Autonomous", sub: "L9–10", min: 9, max: 10, color: "#34d399" }
+        ];
+
+        // --- STATE ---
+        let currentQ = 0;
+        let score = 0;
+        let selectingOption = false;
+        let resultLevel = 1;
+        let resultTitle = "";
+        let resultDesc = "";
+
+        // --- CORE FUNCTIONS ---
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            const target = document.getElementById(viewId);
+            // reset animation
+            target.classList.remove('fade-in', 'slide-in', 'zoom-in');
+            void target.offsetWidth; // trigger reflow
+            if(viewId === 'view-landing' || viewId === 'view-calculating') target.classList.add('fade-in');
+            else if(viewId === 'view-results') target.classList.add('zoom-in');
+            else target.classList.add('slide-in');
+            
+            target.classList.add('active');
+            window.scrollTo(0, 0);
+            lucide.createIcons(); // Re-render icons on new views
+        }
+
+        function handleImageError(imgElement, fallbackId = 'nav-logo-fallback') {
+            imgElement.style.display = 'none';
+            document.getElementById(fallbackId).classList.remove('hidden');
+        }
+
+        function startQuiz() {
+            if (window.goatcounter && window.goatcounter.count) {
+                window.goatcounter.count({
+                    path: 'start-assessment',
+                    title: 'Start Assessment',
+                    event: true,
+                });
+            }
+            currentQ = 0;
+            score = 0;
+            selectingOption = false;
+            renderQuestion();
+            switchView('view-quiz');
+        }
+
+        function resetApp() {
+            selectingOption = false;
+            switchView('view-landing');
+        }
+
+        function maturityDots(points, max = 4) {
+            return Array.from({ length: max }, (_, i) =>
+                `<span class="inline-block w-1.5 h-1.5 rounded-full ${i < points ? 'active bg-bmc-orange' : 'bg-slate-600'}"></span>`
+            ).join('');
+        }
+
+        function renderQuestion() {
+            const q = QUESTIONS[currentQ];
+            const accent = ACCENT_STYLES[q.accent] || ACCENT_STYLES.blue;
+            const container = document.getElementById('quiz-options-container');
+            const questionEl = document.getElementById('quiz-question-text');
+            const card = document.getElementById('quiz-card');
+
+            questionEl.classList.remove('question-swap');
+            void questionEl.offsetWidth;
+            questionEl.classList.add('question-swap');
+            questionEl.textContent = q.question;
+
+            document.getElementById('quiz-progress-text').textContent = `Question ${currentQ + 1} of ${QUESTIONS.length}`;
+            document.getElementById('quiz-progress-percent').textContent = `${Math.round((currentQ / QUESTIONS.length) * 100)}%`;
+            document.getElementById('quiz-progress-bar').style.width = `${(currentQ / QUESTIONS.length) * 100}%`;
+
+            document.getElementById('quiz-tag').className = `inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border mb-3 ${accent.chip}`;
+            document.getElementById('quiz-tag').textContent = q.tag;
+
+            document.getElementById('quiz-icon-wrap').className = `flex-shrink-0 w-14 h-14 rounded-2xl border flex items-center justify-center shadow-inner ${accent.iconBg}`;
+            document.getElementById('quiz-icon').setAttribute('data-lucide', q.icon);
+            document.getElementById('quiz-icon').className = `w-7 h-7 ${accent.text}`;
+
+            document.getElementById('quiz-accent-glow').className = `pointer-events-none absolute -top-24 -right-16 w-72 h-72 rounded-full blur-[90px] opacity-30 ${accent.glow}`;
+
+            document.getElementById('quiz-steps').innerHTML = QUESTIONS.map((_, i) => {
+                const done = i < currentQ;
+                const active = i === currentQ;
+                return `<div class="quiz-step flex-1 h-2 rounded-full ${
+                    active ? 'active bg-bmc-orange' : done ? 'bg-bmc-blue' : 'bg-slate-700'
+                }" title="Question ${i + 1}"></div>`;
+            }).join('');
+
+            if (q.type === 'slider') {
+                const midIndex = Math.floor((q.options.length - 1) / 2);
+                const initial = q.options[midIndex];
+                container.className = 'flex flex-col gap-6';
+                container.innerHTML = `
+                    <div class="rounded-2xl border border-slate-600/80 bg-gradient-to-b from-slate-800 to-slate-900 p-6 md:p-8 text-center shadow-inner">
+                        <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Your readiness</p>
+                        <div id="slider-value" class="text-6xl font-black text-bmc-orange mb-2 leading-none">${initial.points}</div>
+                        <div id="slider-label" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-bmc-orange/15 text-bmc-orange border border-bmc-orange/25 mb-4">${initial.label || MATURITY_LABELS[initial.points]}</div>
+                        <p id="slider-description" class="text-slate-300 text-lg leading-relaxed min-h-[4.5rem]">${initial.text}</p>
+                    </div>
+                    <div class="px-1 md:px-4">
+                        <input
+                            id="scale-slider"
+                            type="range"
+                            min="0"
+                            max="${q.options.length - 1}"
+                            value="${midIndex}"
+                            step="1"
+                            class="scale-slider"
+                            oninput="updateSliderDescription(this.value)"
+                            aria-label="Agentic AI readiness scale"
+                        >
+                        <div class="flex justify-between mt-3 text-sm font-bold text-slate-500 px-1">
+                            ${q.options.map(opt => `<span class="slider-tick">${opt.points}</span>`).join('')}
+                        </div>
+                    </div>
+                    <button
+                        onclick="confirmSlider()"
+                        class="self-center mt-1 inline-flex items-center justify-center px-8 py-3.5 font-bold text-white bg-bmc-blue rounded-full transition-all hover:bg-bmc-blueHover hover:scale-105 focus:outline-none focus:ring-4 focus:ring-bmc-blue/50 shadow-[0_0_24px_rgba(0,122,226,0.25)]"
+                    >
+                        Lock in &amp; finish
+                        <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+                    </button>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
+            container.innerHTML = q.options.map((opt, i) => `
+                <button
+                    type="button"
+                    onclick="selectOption(${opt.points}, this)"
+                    class="quiz-option text-left p-5 md:p-6 bg-slate-900/70 hover:bg-slate-800/90 border border-slate-700 hover:border-bmc-blue/60 rounded-2xl transition-all duration-300 group flex flex-col gap-4 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-bmc-blue/60"
+                    style="animation-delay: ${i * 70}ms"
+                >
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="quiz-letter flex-shrink-0 w-9 h-9 rounded-xl bg-slate-800 border border-slate-600 group-hover:border-bmc-blue/50 flex items-center justify-center text-slate-300 group-hover:text-white font-bold transition-colors">
+                            ${String.fromCharCode(65 + i)}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 group-hover:text-slate-300 transition-colors">${MATURITY_LABELS[opt.points]}</span>
+                            <div class="maturity-dots flex items-center gap-1">${maturityDots(opt.points)}</div>
+                        </div>
+                    </div>
+                    <span class="text-slate-300 group-hover:text-white font-medium text-base md:text-lg leading-snug transition-colors">${opt.text}</span>
+                    <span class="mt-auto inline-flex items-center text-xs font-semibold text-bmc-blue opacity-0 group-hover:opacity-100 transition-opacity">
+                        Choose this path
+                        <i data-lucide="chevron-right" class="w-3.5 h-3.5 ml-1"></i>
+                    </span>
+                </button>
+            `).join('');
+
+            card.classList.remove('question-swap');
+            void card.offsetWidth;
+            card.classList.add('question-swap');
+            lucide.createIcons();
+        }
+
+        function updateSliderDescription(index) {
+            const q = QUESTIONS[currentQ];
+            const opt = q.options[Number(index)];
+            const valueEl = document.getElementById('slider-value');
+            valueEl.textContent = opt.points;
+            valueEl.classList.remove('slider-pulse');
+            void valueEl.offsetWidth;
+            valueEl.classList.add('slider-pulse');
+            document.getElementById('slider-label').textContent = opt.label || MATURITY_LABELS[opt.points];
+            document.getElementById('slider-description').textContent = opt.text;
+
+            document.querySelectorAll('.slider-tick').forEach((tick, i) => {
+                tick.className = `slider-tick ${i === Number(index) ? 'text-bmc-orange' : 'text-slate-500'}`;
+            });
+        }
+
+        function confirmSlider() {
+            if (selectingOption) return;
+            const slider = document.getElementById('scale-slider');
+            const opt = QUESTIONS[currentQ].options[Number(slider.value)];
+            selectOption(opt.points);
+        }
+
+        function selectOption(points, btn) {
+            if (selectingOption) return;
+            selectingOption = true;
+
+            if (btn) {
+                const siblings = btn.parentElement.querySelectorAll('.quiz-option');
+                siblings.forEach(el => {
+                    if (el === btn) el.classList.add('selected');
+                    else el.classList.add('dimmed');
+                });
+            }
+
+            setTimeout(() => {
+                score += points;
+                selectingOption = false;
+                if (currentQ < QUESTIONS.length - 1) {
+                    currentQ++;
+                    renderQuestion();
+                } else {
+                    finishQuiz();
+                }
+            }, btn ? 380 : 0);
+        }
+
+        function finishQuiz() {
+            if (window.goatcounter && window.goatcounter.count) {
+                window.goatcounter.count({
+                    path: 'finish-assessment',
+                    title: 'Finish Assessment',
+                    event: true,
+                });
+            }
+            switchView('view-calculating');
+
+            setTimeout(() => {
+                switchView('view-results');
+                requestAnimationFrame(() => calculateResults());
+            }, 2000);
+        }
+
+        function calculateResults() {
+            const maxScore = QUESTIONS.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.points)), 0); // 5 × 4 + 1 × 5 = 25
+            const percentage = score / maxScore;
+            const level = Math.max(1, Math.round(percentage * 10));
+            const circumference = 2 * Math.PI * 52;
+            resultLevel = level;
+
+            document.getElementById('results-level').textContent = level;
+
+            let title = "", desc = "", stroke = "", fillClass = "", tickActive = "";
+            if (level <= 3) {
+                title = "Siloed and Reactive";
+                desc = "Your teams learn about problems from users, then chase alert storms across disconnected tools. Without service context, AI has nothing trustworthy to reason over — every major incident becomes a war room.";
+                stroke = "#ef4444";
+                fillClass = "bg-red-500";
+                tickActive = "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.55)]";
+            } else if (level <= 7) {
+                title = "Correlated but Human-Driven";
+                desc = "You have real tooling and some noise reduction, but people still stitch together context, find root cause, and run the fix. Your MTTR is set by who is on call, not by your platform.";
+                stroke = "#f59e0b";
+                fillClass = "bg-amber-500";
+                tickActive = "bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.55)]";
+            } else {
+                title = "Approaching Autonomous Operations";
+                desc = "Excellent work. Observability, service context, and automation are connected — you’re close to agentic AIOps: predicting issues, explaining root cause, and remediating with minimal human touch.";
+                stroke = "#10b981";
+                fillClass = "bg-emerald-500";
+                tickActive = "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.55)]";
+            }
+
+            resultTitle = title;
+            resultDesc = desc;
+            document.getElementById('results-title').textContent = title;
+            document.getElementById('results-desc').textContent = desc;
+            document.getElementById('results-gap').textContent = level >= 10
+                ? "Target reached"
+                : `${10 - level} level${10 - level === 1 ? '' : 's'} to Level 10`;
+
+            const ring = document.getElementById('maturity-ring');
+            ring.style.stroke = stroke;
+            ring.style.strokeDasharray = String(circumference);
+            ring.style.strokeDashoffset = String(circumference);
+            // Force reflow so the ring animates from empty each time
+            void ring.getBoundingClientRect();
+            ring.style.strokeDashoffset = String(circumference * (1 - level / 10));
+
+            const spectrum = document.getElementById('maturity-spectrum-fill');
+            spectrum.className = `maturity-spectrum-fill absolute inset-y-0 left-0 rounded-full ${fillClass}`;
+            spectrum.style.width = '0%';
+            void spectrum.offsetWidth;
+            spectrum.style.width = `${level * 10}%`;
+
+            const ticks = document.getElementById('results-ticks');
+            ticks.innerHTML = Array.from({ length: 10 }, (_, i) => {
+                const n = i + 1;
+                const active = n <= level;
+                return `<div class="flex flex-col items-center gap-1">
+                    <div class="h-2.5 w-full rounded-full ${active ? tickActive : 'bg-slate-700'}"></div>
+                    <span class="text-[10px] font-bold ${active ? 'text-white' : 'text-slate-600'}">${n}</span>
+                </div>`;
+            }).join('');
+
+            document.getElementById('results-glow').className = `absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 blur-[100px] opacity-20 ${fillClass}`;
+        }
+
+        function pathToLevel10Summary(level) {
+            if (level >= 10) {
+                return [
+                    `Path to Level 10:`,
+                    `You're already at the target state. Keep the closed loop healthy — service-aware observability, low-noise situations with explained cause, and governed auto-remediation.`
+                ];
+            }
+
+            const focus = [];
+            if (level < 5) {
+                focus.push(`1. Observe — unified observability and live service models (BMC Helix Discovery, BMC Helix Operations Management)`);
+            }
+            if (level < 8) {
+                focus.push(`${focus.length + 1}. Analyze — correlate noise into situations and explain root cause (BMC Helix AIOps, BMC HelixGPT, BMC Helix ServiceOps)`);
+            }
+            focus.push(`${focus.length + 1}. Act — automate remediation and ITSM handoffs (Intelligent Automation, Automation for Servers, BMC Helix ITSM)`);
+
+            return [
+                `What's needed to reach Level 10:`,
+                `Build a closed-loop Helix stack so signals move from observation to explained cause to automated fix without manual handoffs:`,
+                ``,
+                ...focus
+            ];
+        }
+
+        function shareResults() {
+            const level = resultLevel || 1;
+            const title = resultTitle || document.getElementById('results-title').textContent;
+            const desc = resultDesc || document.getElementById('results-desc').textContent;
+            const pageUrl = window.location.href.split('#')[0];
+
+            const subject = `My BMC Helix AIOps Maturity Result: Level ${level}/10`;
+            const body = [
+                `I just completed the BMC Helix AIOps Maturity Assessor.`,
+                ``,
+                `Maturity Level: ${level} / 10`,
+                `Profile: ${title}`,
+                ``,
+                desc,
+                ``,
+                ...pathToLevel10Summary(level),
+                ``,
+                `Take the assessment: ${pageUrl}`,
+                `Learn more: https://www.helixops.ai`
+            ].join('\n');
+
+            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+
+        function renderMaturityWedge(level) {
+            const host = document.getElementById('maturity-wedge');
+            const w = 560;
+            const h = 240;
+            const padL = 12;
+            const padR = 12;
+            const baseY = 200;
+            const n = MATURITY_WEDGES.length;
+            const segW = (w - padL - padR) / n;
+
+            // Heights grow left → right (wedge / maturity ramp)
+            const heightFor = (index) => 48 + index * 28;
+            const polys = MATURITY_WEDGES.map((stage, i) => {
+                const x0 = padL + i * segW;
+                const x1 = padL + (i + 1) * segW;
+                const h0 = heightFor(i);
+                const h1 = heightFor(i + 1);
+                const y0 = baseY - h0;
+                const y1 = baseY - h1;
+                const state = level > stage.max ? 'is-past' : (level >= stage.min ? 'is-current' : 'is-ahead');
+                const fillOpacity = state === 'is-current' ? 0.95 : state === 'is-past' ? 0.5 : 0.2;
+                const midX = (x0 + x1) / 2;
+                const labelY = baseY - Math.min(h0, h1) / 2 - 4;
+                const textFill = state === 'is-ahead' ? '#64748b' : '#0f172a';
+                return `
+                    <g class="wedge-segment ${state}">
+                        <path
+                            d="M ${x0} ${baseY} L ${x0} ${y0} L ${x1} ${y1} L ${x1} ${baseY} Z"
+                            fill="${stage.color}"
+                            fill-opacity="${fillOpacity}"
+                            stroke="#0f172a"
+                            stroke-width="1.5"
+                        />
+                        <text x="${midX}" y="${labelY}" text-anchor="middle" fill="${textFill}" font-size="12" font-weight="800">${stage.label}</text>
+                        <text x="${midX}" y="${baseY + 18}" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="600">${stage.sub}</text>
+                    </g>
+                `;
+            }).join('');
+
+            const markerX = padL + ((level - 0.5) / 10) * (w - padL - padR);
+            const markerH = 48 + ((level - 1) / 9) * (heightFor(n) - 48);
+            const marker = `
+                <g>
+                    <line x1="${markerX}" y1="${baseY - markerH - 8}" x2="${markerX}" y2="${baseY}" stroke="#FF5C28" stroke-width="2.5" stroke-dasharray="5 4"/>
+                    <circle cx="${markerX}" cy="${baseY - markerH - 12}" r="8" fill="#FF5C28" stroke="#fff" stroke-width="2"/>
+                    <text x="${markerX}" y="${baseY - markerH - 26}" text-anchor="middle" fill="#FF5C28" font-size="11" font-weight="800">YOU · L${level}</text>
+                </g>
+            `;
+
+            host.innerHTML = `
+                <svg viewBox="0 0 ${w} ${h}" class="w-full h-auto" role="img" aria-label="AIOps maturity wedge from siloed to autonomous">
+                    <line x1="${padL}" y1="${baseY}" x2="${w - padR}" y2="${baseY}" stroke="#334155" stroke-width="2"/>
+                    ${polys}
+                    ${marker}
+                    <text x="${w - padR}" y="20" text-anchor="end" fill="#34d399" font-size="11" font-weight="700">TARGET · LEVEL 10</text>
+                </svg>
+            `;
+
+            document.getElementById('wedge-you-badge').textContent = `You: L${level}`;
+        }
+
+        function showSolutions() {
+            const level = resultLevel || 1;
+            renderMaturityWedge(level);
+
+            const gap = Math.max(0, 10 - level);
+            document.getElementById('solutions-journey-title').textContent = gap === 0
+                ? "You're at the target state"
+                : `${gap} level${gap === 1 ? '' : 's'} to Level 10 autonomy`;
+            document.getElementById('solutions-journey-desc').textContent = gap === 0
+                ? "Maintain the closed loop — service-aware observability, low-noise situations with explained cause, and governed auto-remediation."
+                : "Climb the wedge by stacking Helix capabilities: see the whole service, know what matters, then close the loop without handoffs.";
+
+            document.getElementById('solutions-journey-steps').innerHTML = HELIX_SOLUTIONS.map((sol, i) => `
+                <div class="flex items-start gap-3 rounded-2xl border border-slate-700/80 bg-slate-900/40 px-4 py-3">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-xl border ${sol.iconBg} flex items-center justify-center">
+                        <span class="text-xs font-black ${sol.iconColor}">${i + 1}</span>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="font-bold text-white text-sm">${sol.stage}</span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">${sol.levelRange}</span>
+                        </div>
+                        <p class="text-sm text-slate-400 mt-0.5">${sol.blurb}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            const container = document.getElementById('solutions-container');
+            container.innerHTML = HELIX_SOLUTIONS.map((sol, i) => `
+                <div class="target-pillar rounded-3xl border ${sol.accent} bg-slate-800/50 p-5 md:p-6 flex flex-col h-full shadow-lg" style="animation-delay: ${i * 90}ms">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-11 h-11 rounded-2xl border ${sol.iconBg} flex items-center justify-center">
+                            <i data-lucide="${sol.icon}" class="w-5 h-5 ${sol.iconColor}"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">${sol.stage} · ${sol.levelRange}</p>
+                            <h3 class="text-lg font-bold text-white leading-tight">${sol.category}</h3>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-5">${sol.blurb}</p>
+                    <div class="space-y-2.5 mt-auto">
+                        ${sol.items.map(item => `
+                            <a href="${item.url}" data-goatcounter-click="product-link" data-goatcounter-title="${item.title}" target="_blank" rel="noopener noreferrer" class="product-tile group block rounded-2xl border border-slate-700/80 bg-slate-900/50 hover:border-bmc-blue/50 hover:bg-slate-900 p-3.5">
+                                <div class="flex items-start justify-between gap-2 mb-1">
+                                    <h4 class="text-sm font-bold text-white group-hover:text-bmc-blue transition-colors leading-snug">${item.title}</h4>
+                                    <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-600 group-hover:text-bmc-blue flex-shrink-0 mt-0.5 transition-colors"></i>
+                                </div>
+                                <p class="text-xs text-slate-400 leading-relaxed">${item.desc}</p>
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            switchView('view-solutions');
+        }
+
+        // Initialize icons on load
+        lucide.createIcons();
+    </script>
+</body>
+</html>
