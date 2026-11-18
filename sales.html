@@ -71,20 +71,20 @@
             </p>
             <div class="grid sm:grid-cols-3 gap-3 text-sm">
                 <div class="rounded-2xl border border-red-500/30 bg-red-500/10 p-3">
-                    <p class="font-bold text-red-300">1–3 · Siloed and Reactive</p>
-                    <p class="text-slate-400 mt-1 text-xs leading-relaxed">Red result. Users find the outage first; root cause is a bridge call.</p>
+                    <p class="font-bold text-red-300">Scores 1–3 · Level 1 · Reactive Monitoring</p>
+                    <p class="text-slate-400 mt-1 text-xs leading-relaxed">Red result. Firefighting with siloed tools; MTTR runs past a working day. Focus on unified visibility.</p>
                 </div>
                 <div class="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-3">
-                    <p class="font-bold text-amber-300">4–7 · Correlated but Human-Driven</p>
-                    <p class="text-slate-400 mt-1 text-xs leading-relaxed">Amber result. Tools are real. Triage and the fix are still people.</p>
+                    <p class="font-bold text-amber-300">Scores 4–7 · Level 2 · Proactive Operations</p>
+                    <p class="text-slate-400 mt-1 text-xs leading-relaxed">Amber result. Tool sprawl and alert fatigue; MTTR in hours. Focus on faster RCA.</p>
                 </div>
                 <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-3">
-                    <p class="font-bold text-emerald-300">8–10 · Approaching Autonomous</p>
-                    <p class="text-slate-400 mt-1 text-xs leading-relaxed">Green result. A 10 changes the line under the number to Target reached. The title does not change.</p>
+                    <p class="font-bold text-emerald-300">Scores 8–10 · Level 3 · Preventive Operations</p>
+                    <p class="text-slate-400 mt-1 text-xs leading-relaxed">Green result. Reliability-focused and looking at AI agents. Focus on prevention. A 10 says Target reached under the number.</p>
                 </div>
             </div>
             <p class="mt-4 text-sm text-slate-400 leading-relaxed">
-                The path diagram uses a finer wedge: Siloed, Consolidated, Correlated, Predictive, Autonomous. In the meeting, stay with the three profiles above unless you are looking at that diagram together. The last question asks how ready they are for agentic AI (HelixGPT agents that investigate and act). If they are wary of the word “agent,” talk about trusted data and governed automation. A finished run cannot be a 1 — six answers are at least 6 points, and 6 points is a Level 2. Bookmark the score you’re prepping, for example <span class="text-slate-200 font-semibold">sales.html#6</span>.
+                The levels and phase names follow the <span class="text-slate-200 font-semibold">AIOps Maturity-Based Messaging</span> deck (Sept 2026). Customers see a score out of 10 and their deck level as the title. Say <span class="text-slate-200 font-semibold">score</span> for the number and <span class="text-slate-200 font-semibold">Level 1, 2, or 3</span> only for the phase, so a 2 is never confused with Level 2. The deck’s rule applies: don’t pitch advanced AI to a team still struggling with basic telemetry and correlation. A finished run cannot be a 1 — seven answers are at least 7 points, and 7 points is a score of 2. Bookmark the score you’re prepping, for example <span class="text-slate-200 font-semibold">sales.html#6</span>.
             </p>
         </header>
 
@@ -94,40 +94,46 @@
             <details class="rounded-2xl border border-slate-700 bg-slate-800/40 px-5 py-4">
                 <summary class="cursor-pointer font-bold text-white">How the number is calculated</summary>
                 <div class="mt-4 text-sm text-slate-300 leading-relaxed space-y-3">
-                    <p>Five questions score 1–4. Agentic AI readiness scores 1–5. Maximum is 25. The ring shows <span class="text-white font-semibold">round(points ÷ 25 × 10)</span>, and at least 1. That is the same formula as the results page.</p>
-                    <p>Every question is worth at least 1, so a finished assessment is 6–25 points and lands on levels 2–10. Levels below 2 only exist if the run didn’t finish.</p>
+                    <p>Six questions score 1–4. The AI agents slider scores 1–5. Maximum is 29. The ring shows <span class="text-white font-semibold">round(points ÷ 29 × 10)</span>, and at least 1. That is the same formula as the results page.</p>
+                    <p>Every question is worth at least 1, so a finished assessment is 7–29 points and lands on scores 2–10. A score of 1 only exists if the run didn’t finish. Scores 1–3 are Level 1, 4–7 are Level 2, and 8–10 are Level 3.</p>
                     <div id="math-table" class="overflow-x-auto"></div>
                 </div>
             </details>
             <details class="rounded-2xl border border-slate-700 bg-slate-800/40 px-5 py-4">
-                <summary class="cursor-pointer font-bold text-white">The six questions, and what each answer is worth</summary>
+                <summary class="cursor-pointer font-bold text-white">The seven questions, and what each answer is worth</summary>
                 <div id="decoder" class="mt-4 space-y-6"></div>
             </details>
         </section>
     </main>
 
     <script>
-        // Profile titles and descriptions match calculateResults() in index.html.
+        // Phase titles and descriptions match PHASES in index.html.
         const PROFILES = {
             reactive: {
-                title: "Siloed and Reactive",
-                desc: "Your teams learn about problems from users, then chase alert storms across disconnected tools. Without service context, AI has nothing trustworthy to reason over — every major incident becomes a war room.",
+                phase: 1,
+                name: "Reactive Monitoring",
+                title: "Maturity Level 1 · Reactive Monitoring",
+                desc: "Your teams are firefighting: siloed tools per team, threshold alerts, and investigations that mean pasting dashboards into chat. Incidents regularly run past a working day. The opportunity is unified visibility. Consolidate tools and turn alert noise into actionable insight.",
                 stroke: "#ef4444",
                 bar: "bg-red-500",
                 chip: "bg-red-500/15 text-red-300 border-red-500/30",
                 edge: "border-t-red-500"
             },
             partial: {
-                title: "Correlated but Human-Driven",
-                desc: "You have real tooling and some noise reduction, but people still stitch together context, find root cause, and run the fix. Your MTTR is set by who is on call, not by your platform.",
+                phase: 2,
+                name: "Proactive Operations",
+                title: "Maturity Level 2 · Proactive Operations",
+                desc: "You have modern telemetry, but tool sprawl and alert fatigue keep MTTR at hours, and SREs switch between tools to investigate by hand. The opportunity is faster root cause: service models, situations, and AI agents that isolate the cause in minutes and hand it to ITSM.",
                 stroke: "#f59e0b",
                 bar: "bg-amber-500",
                 chip: "bg-amber-500/15 text-amber-200 border-amber-500/30",
                 edge: "border-t-amber-500"
             },
             approaching: {
-                title: "Approaching Autonomous Operations",
-                desc: "Excellent work. Observability, service context, and automation are connected — you’re close to agentic AIOps: predicting issues, explaining root cause, and remediating with minimal human touch.",
+                phase: 3,
+                name: "Preventive Operations",
+                title: "Maturity Level 3 · Preventive Operations",
+                desc: "You run a mature, reliability-focused operation. The opportunity now is prevention: forecast degradation, predict change risk, remediate business-critical vulnerabilities, and trust AI agents to investigate and fix issues in production.",
                 stroke: "#10b981",
                 bar: "bg-emerald-500",
                 chip: "bg-emerald-500/15 text-emerald-200 border-emerald-500/30",
@@ -136,412 +142,627 @@
         };
 
         const WEDGES = [
-            { label: "Siloed", min: 1, max: 2, color: "#ef4444" },
-            { label: "Consolidated", min: 3, max: 4, color: "#f59e0b" },
-            { label: "Correlated", min: 5, max: 6, color: "#007AE2" },
-            { label: "Predictive", min: 7, max: 8, color: "#22d3ee" },
-            { label: "Autonomous", min: 9, max: 10, color: "#34d399" }
+            { label: "Reactive", min: 1, max: 3, color: "#ef4444" },
+            { label: "Proactive", min: 4, max: 7, color: "#f59e0b" },
+            { label: "Preventive", min: 8, max: 10, color: "#34d399" }
         ];
 
+        // From "AIOps Maturity-Based Messaging" (Sept 2026), one entry per maturity level.
+        const PLAYBOOK = {
+            1: {
+                spot: "Teams act as firefighters, responding after an outage or performance drop has already happened. Investigations mean copying dashboard data into Teams or Slack. Each team has its own tools for logs, metrics, and monitoring (for example Dynatrace, Splunk, SolarWinds), with no shared context.",
+                pain: [
+                    "High MTTR: it regularly exceeds a working day",
+                    "Troubleshooting is reactive, driven by alerts on predefined thresholds",
+                    "Siloed logs and metrics",
+                    "No shared context across teams"
+                ],
+                message: "For customers at level 1, there are opportunities to unify all their monitoring data to improve visibility and reduce the alert noise that slows down incident response.",
+                helix: [
+                    "Continuous discovery: automatically discover assets and map relationships",
+                    "Time- and topology-based situations: map dependencies between infrastructure and applications",
+                    "Data reconciliation: unify data from diverse topology sources",
+                    "Event management: classify and prioritize alerts"
+                ],
+                focus: "Focus on unified visibility",
+                growth: [
+                    "Consolidate tools and transform alert noise into actionable insights for incident response",
+                    "Eliminate visibility silos that slow down incident response",
+                    "Add alert context to locate assets and notify contacts for faster troubleshooting",
+                    "Reduce noise and costs while maintaining performance"
+                ],
+                nextStep: "Expedite RCA: add AI-driven investigation over historical data.",
+                discovery: [
+                    "How many tools are you using? Do they provide unified visibility of your operations?",
+                    "When an outage happens, how many different tools do your teams use to find the root cause?",
+                    "Are your metrics, logs, traces, and changes linked, or do engineers have to correlate the data by hand?",
+                    "Have recent incidents regularly run past a working day?",
+                    "Are false positives and alert noise affecting your team’s efficiency?"
+                ],
+                committee: [
+                    { title: "VP of Operations (signs)", challenge: "High alert and incident volume causing slow response times. Staff burnout from constant firefighting.", outcome: "Maintain service availability and meet performance SLAs. Improve operational efficiency." },
+                    { title: "IT Operations Manager", challenge: "Fragmented tools and siloed teams make collaboration and root cause analysis difficult.", outcome: "Reduce incident volume and MTTR." },
+                    { title: "System Administrator", challenge: "Manual troubleshooting, disconnected tools, context switching.", outcome: "Effective troubleshooting. A toolset that is easy to use." },
+                    { title: "DevOps Engineer", challenge: "Manual troubleshooting, context switching, siloed tools.", outcome: "Quick debugging. Fewer errors and less downtime." }
+                ],
+                drivers: [
+                    { name: "Data ingestion and reconciliation", desc: "Consolidate disparate information through native ingestion and third-party integrations.", kpis: ["Data source coverage", "Ingestion success rate", "Duplicate record reduction"] },
+                    { name: "Noise reduction", desc: "Isolate the signal from the noise through event management.", kpis: ["Alert noise reduction", "MTTR"] },
+                    { name: "Discovery", desc: "Identify and inventory every connected device, service, application, and cloud asset.", kpis: ["Asset visibility coverage"] },
+                    { name: "Service modeling", desc: "Map IT components to business services and show dependencies.", kpis: ["Critical services mapped", "% of root cause tied to a service", "Time to assess business impact"] }
+                ],
+                story: {
+                    customer: "Moody’s Corporation",
+                    before: "Alert fatigue, and no correlation across AppDynamics, Dynatrace, SolarWinds, and other tools. Different application teams had adopted different APM products.",
+                    after: "Helix unified their observability data into end-to-end traceability from application to infrastructure and network. AIOps replaced IPCenter in March 2021.",
+                    outcomes: ["80% reduction in noise using situations", "40% reduction in MTTR across P1–P4", "More reliable monitoring coverage"],
+                    url: ""
+                }
+            },
+            2: {
+                spot: "Teams are modernizing: breaking monoliths into microservices on cloud, shifting to DevOps, and growing an SRE practice. SREs and DevOps teams are expected to understand the whole stack, often with five to seven monitoring tools, and they are burning out on alert fatigue.",
+                pain: [
+                    "High MTTR: it regularly exceeds a few hours",
+                    "Tool sprawl and limited correlation across systems",
+                    "SREs context-switch and investigate by hand",
+                    "Cognitive overload and alert fatigue"
+                ],
+                message: "At level 2, the focus shifts from reactive monitoring to proactive operations as teams modernize, move to the cloud, and use richer metrics, logs, and traces. The goal is to diagnose issues more effectively and get deeper insight into their applications.",
+                helix: [
+                    "Service models: map infrastructure to business services",
+                    "Noise reduction and situations: group redundant alerts into one situation",
+                    "Integration and collaboration: connect with other IT tools to align operations, service management, and the business",
+                    "AI agents: Root Cause Finder, Situation Analyzer, Ops Swarmer"
+                ],
+                focus: "Focus on faster RCA",
+                growth: [
+                    "Complete comprehensive RCA in minutes",
+                    "Triage alerts and isolate root causes in minutes",
+                    "See root cause turn into automated remediation",
+                    "Automatically generate an ITSM ticket with operational context"
+                ],
+                nextStep: "Enable prevention: add predictive analytics for service unavailability and outage detection, capacity planning, change risk prediction, and vulnerability remediation.",
+                discovery: [
+                    "Do your engineers suffer from alert fatigue?",
+                    "Are you looking to reduce tool sprawl in your team’s stack?",
+                    "How are you using machine learning or predictive analytics today?",
+                    "Can you walk me through how you handle major incidents, from detection to resolution?",
+                    "What level of automation do you have in your workflows today, and where do you see gaps?"
+                ],
+                committee: [
+                    { title: "VP of Operations (signs)", challenge: "High alert and incident volume causing slow response times. Staff burnout from constant firefighting.", outcome: "Maintain service availability and meet performance SLAs. Improve operational efficiency." },
+                    { title: "Infrastructure & Operations Lead", challenge: "Outages can cost them their job, reputation, and customers. Too many silos and too much complexity lead to long MTTR.", outcome: "Build infrastructure, operations, and processes that support business agility, performance, and growth." },
+                    { title: "SRE Lead", challenge: "Poor visibility into highly distributed environments because of silos, causing long MTTR.", outcome: "Dramatically reduce MTTR, prevent issues, or automate remediation." },
+                    { title: "DevOps Lead", challenge: "Complexity and frequent changes create more incidents.", outcome: "Quick debugging. Fewer errors and less downtime." },
+                    { title: "Platform Engineering Lead", challenge: "Pressure to automate environments and deliver observability as a service to all developers.", outcome: "Support developers and DevOps engineers with unified visibility tools." }
+                ],
+                drivers: [
+                    { name: "Root cause analysis", desc: "Isolate root causes. Correlate events into situations automatically (ML).", kpis: ["Root cause accuracy", "Mean time to identify root cause"] },
+                    { name: "Incident creation in ITSM", desc: "Create a ticket or incident in ITSM automatically.", kpis: ["% of actionable incidents", "Duplicate incident reduction", "Incident routing and assignment"] },
+                    { name: "Automated remediation", desc: "Identify and take corrective action with a human in the loop.", kpis: ["% of incidents remediated automatically", "Remediation success rate", "MTTR"] },
+                    { name: "Service modeling", desc: "Map cloud and on-prem, service model hierarchies, and service-to-service relationships.", kpis: ["Critical services mapped", "% of root cause tied to a service", "Time to assess business impact"] }
+                ],
+                story: {
+                    customer: "Maccabi Health Services",
+                    before: "Up to 50 critical system disruptions a month and frequent downtime, in a complex, siloed estate across on-prem, private cloud, and multi-tenant applications.",
+                    after: "AIOps monitors their systems and automates investigations, freeing staff for innovation. Maccabi is now accelerating its use of agentic AI.",
+                    outcomes: ["Proactive notification of 90% of issues", "Zero disruptions per month", "Better doctor-patient experience"],
+                    url: "https://www.helixops.ai/customers/maccabi-health-services.html"
+                }
+            },
+            3: {
+                spot: "Systems detect patterns and anticipate failures before they occur, so teams act before incidents start or limit their impact. This is a mature, reliability-focused organization. Anomaly detection, change prediction, and help with root cause analysis are essential to running incidents at scale.",
+                pain: [
+                    "Managing risk to protect market reputation",
+                    "Maximizing resilience",
+                    "Building self-healing systems to scale operations without doubling engineering headcount"
+                ],
+                message: "At level 3, the focus is on anticipating issues before they occur and automating resolution to minimize downtime and improve user experience. SREs face intense pressure from the C-suite to eliminate incidents, because reliability is tied directly to revenue and customer experience.",
+                helix: [
+                    "Predictive analytics: forecast service degradation and resource saturation",
+                    "Accelerated incident response: streamline incident response with Ops Swarmer",
+                    "Vulnerability visibility: see vulnerabilities beside critical services",
+                    "Change risk prediction: predict when a change might cause a failure in production"
+                ],
+                focus: "Focus on prevention",
+                growth: [
+                    "Stop outages before they hit",
+                    "Forecast production failures before they happen",
+                    "Deploy changes to production with confidence",
+                    "Prioritize and remediate business-critical vulnerabilities in minutes",
+                    "Prevent capacity issues and cost overruns"
+                ],
+                nextStep: "Confirm the AI agents perform investigations and remediations correctly. Give the agents feedback so they keep learning and earn trust.",
+                discovery: [
+                    "How effective are you at spotting issues before your customers do?",
+                    "Are you evaluating how to bring LLMs or AI agents into your incident response workflow?",
+                    "How effective are you at predicting change risk in production?",
+                    "How is knowledge captured, shared, and reused in your organization?",
+                    "What challenges are you facing in putting AI agents into production?"
+                ],
+                committee: [
+                    { title: "CTO / CIO (signs)", challenge: "Prove the value of tech investments. Drive innovation with limited budget and staff, and outdated, siloed tools and processes.", outcome: "Deploy new technology, including agentic AI, quickly and safely. Support business innovation." },
+                    { title: "VP of Operations (signs)", challenge: "High alert and incident volume causing slow response times. Staff burnout from constant firefighting.", outcome: "Maintain service availability and meet performance SLAs. Improve operational efficiency." },
+                    { title: "Infrastructure & Operations Lead", challenge: "Outages can cost them their job, reputation, and customers. Too many silos and too much complexity lead to long MTTR.", outcome: "Build infrastructure, operations, and processes that support business agility, performance, and growth." },
+                    { title: "SRE Lead", challenge: "Poor visibility into highly distributed environments because of silos, causing long MTTR.", outcome: "Dramatically reduce MTTR, prevent issues, or automate remediation." },
+                    { title: "DevOps Lead", challenge: "Complexity and frequent changes create more incidents.", outcome: "Quick debugging. Fewer errors and less downtime." },
+                    { title: "Platform Engineering Lead", challenge: "Pressure to automate environments and deliver observability as a service to all developers.", outcome: "Support developers and DevOps engineers with unified visibility tools." }
+                ],
+                drivers: [
+                    { name: "Incident response", desc: "Speed up major incident resolution with an orchestrated, insight-driven process.", kpis: ["SLA compliance"] },
+                    { name: "Predictive monitoring", desc: "Track system behavior over time and flag early anomalies before failures happen.", kpis: ["Issues predicted before impact", "Average prediction lead time"] },
+                    { name: "Vulnerability remediation", desc: "Identify, prioritize, and fix security flaws that affect critical services.", kpis: ["MTTR", "Critical risk reduction", "SLA compliance"] },
+                    { name: "Change risk management", desc: "Use past incidents and real-time data to find risk before changes reach production.", kpis: ["Change failure rate", "Change-related incident reduction"] }
+                ],
+                story: null
+            }
+        };
+
+        // Questions follow the discovery questions in "Helix AIOps Maturity Messaging" (Levels 1-3).
         const QUESTIONS = [
             {
-                tag: "Observability",
-                question: "How do you monitor your infrastructure, applications, and cloud?",
+                tag: "Unified Visibility",
+                icon: "layers",
+                accent: "blue",
+                question: "How many monitoring tools do your teams use, and do they give you one view of operations?",
                 options: [
-                    { points: 1, text: "Each team has its own tools and consoles; nobody sees the whole picture." },
-                    { points: 2, text: "Events land in a consolidated console, with static thresholds we tune by hand." },
-                    { points: 3, text: "Full-stack observability (metrics, logs, traces) with dynamic baselines, but not tied to business services." },
-                    { points: 4, text: "Unified observability across the hybrid estate, mapped to business services, with anomaly detection and predictive alerts." }
+                    { text: "Each team has its own tools for logs, metrics, and monitoring. There is no shared context across teams.", points: 1 },
+                    { text: "Five to seven monitoring and observability tools. During incidents we copy and paste dashboards into Teams or Slack.", points: 2 },
+                    { text: "Data is consolidated into a single pane of glass, but engineers still correlate metrics, logs, traces, and changes by hand.", points: 3 },
+                    { text: "A single source of operational truth: metrics, logs, traces, events, and changes are linked and mapped to business services.", points: 4 }
                 ]
             },
             {
-                tag: "Event noise",
-                question: "On a bad day, how do your operators deal with alerts?",
+                tag: "Alert Noise",
+                icon: "bell-ring",
+                accent: "orange",
+                question: "Are false positives and alert noise affecting your team's efficiency?",
                 options: [
-                    { points: 1, text: "Alert storms. Thousands of events, and most get ignored." },
-                    { points: 2, text: "Dedup and filter rules we write and maintain by hand." },
-                    { points: 3, text: "ML correlation groups events into situations, but triage is still manual." },
-                    { points: 4, text: "Noise is cut by 90%+; situations with probable cause are raised before users notice." }
+                    { text: "Constantly. Threshold alerts flood us, and the team is burned out from firefighting.", points: 1 },
+                    { text: "Event rules classify and de-duplicate alerts, but alert fatigue is still real.", points: 2 },
+                    { text: "AI groups redundant alerts into situations, and most of the noise is gone.", points: 3 },
+                    { text: "Noise is down 80%+, and every situation carries service impact and the context to act on it.", points: 4 }
                 ]
             },
             {
-                tag: "Service context",
-                question: "When an alert fires, do you know which business service is affected?",
+                tag: "Service Context",
+                icon: "network",
+                accent: "cyan",
+                question: "When an alert fires, how quickly can you tell which business service is affected?",
                 options: [
-                    { points: 1, text: "No. We find out when users call the service desk." },
-                    { points: 2, text: "We check a static CMDB that is often out of date." },
-                    { points: 3, text: "Discovered topology and service models stay current, but impact is assessed manually." },
-                    { points: 4, text: "Dynamic service models score health and business impact in real time." }
+                    { text: "We usually can't. Users or the service desk tell us.", points: 1 },
+                    { text: "We look it up in a CMDB or inventory that is often out of date.", points: 2 },
+                    { text: "Continuous discovery and reconciled topology keep service models current for our critical services.", points: 3 },
+                    { text: "Every critical service is modeled across cloud and on-prem, so business impact and root cause are tied to a service instantly.", points: 4 }
                 ]
             },
             {
-                tag: "Root cause",
-                question: "When a major incident hits, how do you find the root cause?",
+                tag: "Root Cause & MTTR",
+                icon: "search-check",
+                accent: "violet",
+                question: "Walk through a major incident, from detection to resolution. How long does it usually take?",
                 options: [
-                    { points: 1, text: "A war-room bridge call where every team proves it isn’t them." },
-                    { points: 2, text: "Runbooks and tribal knowledge. It usually takes hours." },
-                    { points: 3, text: "Probable-cause analysis and change correlation narrow it down quickly." },
-                    { points: 4, text: "GenAI explains the situation, probable cause, related changes, and the recommended fix in minutes." }
+                    { text: "Incidents regularly run past a working day. We find out after the outage, and teams search several tools for the cause.", points: 1 },
+                    { text: "A few hours. SREs switch between tools and correlate data by hand to find the root cause.", points: 2 },
+                    { text: "AI-driven root cause analysis isolates the cause in minutes, using causal context and historical data.", points: 3 },
+                    { text: "AI agents analyze situations, find the root cause, and swarm the right experts. Major incidents stay within SLA.", points: 4 }
                 ]
             },
             {
-                tag: "Remediation",
-                question: "Once you know the cause, how does the fix happen?",
+                tag: "Automation",
+                icon: "wrench",
+                accent: "emerald",
+                question: "What level of automation sits between finding the cause and fixing it?",
                 options: [
-                    { points: 1, text: "An engineer logs in and fixes it by hand; the ticket is updated later, if at all." },
-                    { points: 2, text: "Some scripts, run ad hoc. Incidents are logged manually." },
-                    { points: 3, text: "Event-triggered automation with approval steps; incidents are auto-created." },
-                    { points: 4, text: "Closed loop: known issues auto-remediate, and incidents and changes are created, updated, and closed automatically." }
+                    { text: "Engineers log in and fix it by hand. The ticket is updated afterward, if at all.", points: 1 },
+                    { text: "Runbooks and scripts run ad hoc. Incidents are logged in ITSM by hand.", points: 2 },
+                    { text: "ITSM incidents are created automatically with operational context, and remediation runs with a human in the loop.", points: 3 },
+                    { text: "Self-healing: known issues remediate automatically using captured operational knowledge, including business-critical vulnerabilities.", points: 4 }
                 ]
             },
             {
-                tag: "Agentic AI readiness",
-                question: "How ready are your operations for agentic AI (e.g. BMC HelixGPT agents) that investigate and act on incidents?",
+                tag: "Prevention",
+                icon: "shield-check",
+                accent: "blue",
+                question: "How effective are you at spotting issues before your customers do, and at predicting change risk?",
                 options: [
-                    { points: 1, label: "Siloed", text: "Data is fragmented. An AI agent would have nothing trustworthy to reason over." },
-                    { points: 2, label: "Curious", text: "Interested in GenAI, but monitoring, topology, and tickets live in separate silos." },
-                    { points: 3, label: "Grounding", text: "Consolidated data and some service context. AI could summarize, but not safely act." },
-                    { points: 4, label: "Piloting", text: "Service-aware correlation and automation exist; evaluating HelixGPT for root cause and guided remediation." },
-                    { points: 5, label: "Agent-ready", text: "Trusted service models, low-noise situations, and governed automation let agents investigate and remediate." }
+                    { text: "We rarely do. Downtime and resource saturation are usually how we find out.", points: 1 },
+                    { text: "Threshold alerts catch obvious issues such as downtime, saturation, and availability.", points: 2 },
+                    { text: "Anomaly detection flags many issues before impact, but we don't forecast failures or score change risk.", points: 3 },
+                    { text: "Predictive analytics forecasts degradation and saturation, and change risk is predicted before we deploy to production.", points: 4 }
+                ]
+            },
+            {
+                type: "slider",
+                tag: "AI Agents",
+                icon: "bot",
+                accent: "orange",
+                question: "How far along are you in bringing LLMs and AI agents into your incident response?",
+                options: [
+                    {
+                        label: "Not yet",
+                        text: "AI isn't part of incident response. Operational knowledge lives in people's heads and old tickets.",
+                        points: 1
+                    },
+                    {
+                        label: "Exploring",
+                        text: "We're looking at how LLMs or AI agents could fit our incident workflow, but haven't started.",
+                        points: 2
+                    },
+                    {
+                        label: "Assisting",
+                        text: "GenAI summarizes incidents and brings up knowledge, but people still run every investigation.",
+                        points: 3
+                    },
+                    {
+                        label: "Piloting",
+                        text: "AI agents investigate incidents and find root cause, and a person reviews every action before it runs.",
+                        points: 4
+                    },
+                    {
+                        label: "Trusted",
+                        text: "AI agents investigate and remediate in production. We check their work and feed corrections back so they keep learning.",
+                        points: 5
+                    }
                 ]
             }
         ];
 
         const LAYERS = [
             {
-                stage: "Observe",
-                range: "L1 → L4",
-                category: "See the whole service",
-                blurb: "One view of the hybrid estate, mapped to the services the business runs on.",
-                icon: "radar",
+                stage: "Level 1 · Reactive Monitoring",
+                range: "Score 1–3",
+                category: "Unified visibility",
+                blurb: "Consolidate tools and turn alert noise into actionable insight.",
+                icon: "layers",
                 accent: "border-bmc-blue/40",
                 iconColor: "text-bmc-blue",
                 items: [
-                    { title: "BMC Helix Discovery", desc: "Discover the hybrid estate and keep service topology current without manual upkeep.", url: "https://www.helixops.ai/products/bmc-helix-discovery.html" },
-                    { title: "BMC Helix Operations Management", desc: "One event and metric stream with dynamic baselines and anomaly detection.", url: "https://www.helixops.ai/products/aiops.html" }
+                    { title: "Continuous discovery", desc: "Automatically discover assets and map their relationships.", url: "https://www.helixops.ai/products/bmc-helix-discovery.html" },
+                    { title: "Data reconciliation", desc: "Unify data from different topology sources into one source of truth.", url: "https://www.helixops.ai/products/aiops.html" },
+                    { title: "Event management", desc: "Classify and prioritize alerts, with the context to locate assets and notify owners.", url: "https://www.helixops.ai/products/aiops.html" },
+                    { title: "Time- and topology-based situations", desc: "Group related alerts by time and dependency to cut noise.", url: "https://www.helixops.ai/products/aiops.html" }
                 ]
             },
             {
-                stage: "Analyze",
-                range: "L5 → L7",
-                category: "Know what matters",
-                blurb: "Cut the noise into situations, scored by service impact, with the cause explained.",
+                stage: "Level 2 · Proactive Operations",
+                range: "Score 4–7",
+                category: "Faster root cause",
+                blurb: "Triage alerts and isolate root cause in minutes, then hand it to ITSM.",
                 icon: "brain",
                 accent: "border-violet-400/40",
                 iconColor: "text-violet-300",
                 items: [
-                    { title: "BMC Helix AIOps", desc: "Correlate events into situations, score service health, and pinpoint probable cause.", url: "https://www.helixops.ai/products/aiops.html" },
-                    { title: "BMC HelixGPT", desc: "Explain situations, related changes, and next-best actions in natural language.", url: "https://www.helixops.ai/products/helixgpt.html" },
-                    { title: "BMC Helix ServiceOps", desc: "Bring operations and service management together on shared change and incident insight.", url: "https://www.helixops.ai/it-solutions/serviceops.html" }
+                    { title: "Service models", desc: "Map infrastructure to business services across cloud and on-prem.", url: "https://www.helixops.ai/products/aiops.html" },
+                    { title: "Noise reduction and situations", desc: "Group redundant alerts into a single situation.", url: "https://www.helixops.ai/products/aiops.html" },
+                    { title: "AI agents", desc: "Root Cause Finder, Situation Analyzer, and Ops Swarmer.", url: "https://www.helixops.ai/products/helixgpt.html" },
+                    { title: "ITSM integration", desc: "Create incidents automatically, with operational context attached.", url: "https://www.helixops.ai/products/bmc-helix-itsm.html" }
                 ]
             },
             {
-                stage: "Act",
-                range: "L8 → L10",
-                category: "Close the loop",
-                blurb: "Remediate known issues and keep the ticket current without the handoffs.",
-                icon: "zap",
-                accent: "border-bmc-orange/40",
-                iconColor: "text-bmc-orange",
+                stage: "Level 3 · Preventive Operations",
+                range: "Score 8–10",
+                category: "Prevention",
+                blurb: "Stop outages before they hit and build self-healing operations.",
+                icon: "shield-check",
+                accent: "border-emerald-400/40",
+                iconColor: "text-emerald-300",
                 items: [
-                    { title: "Intelligent Automation", desc: "Trigger governed remediation straight from situations and probable cause.", url: "https://www.helixops.ai/info/intelligent-automation.html" },
-                    { title: "Automation for Servers", desc: "Run fixes, configuration, and compliance at scale across hybrid estates.", url: "https://www.helixops.ai/products/truesight-server-automation.html" },
-                    { title: "BMC Helix ITSM", desc: "Auto-create, update, and close incidents and changes as the work completes.", url: "https://www.helixops.ai/products/bmc-helix-itsm.html" },
-                    { title: "Innovation Studio", desc: "Low-code workflows tailored to their operating model.", url: "https://www.helixops.ai/products/bmc-helix-itsm.html" }
+                    { title: "Predictive analytics", desc: "Forecast service degradation and resource saturation.", url: "https://www.helixops.ai/products/aiops.html" },
+                    { title: "Change risk prediction", desc: "Predict when a change might cause a failure in production.", url: "https://www.helixops.ai/it-solutions/serviceops.html" },
+                    { title: "Vulnerability visibility", desc: "See and remediate vulnerabilities beside critical services.", url: "https://www.helixops.ai/it-solutions/serviceops.html" },
+                    { title: "Automated remediation", desc: "Self-healing fixes tied to operational knowledge.", url: "https://www.helixops.ai/info/intelligent-automation.html" }
                 ]
             }
         ];
 
         const LEVELS = {
             1: {
-                note: "A finished run cannot land here. Six answers are at least 6 points, and 6 points is a Level 2. If they say 1, open the results ring with them, then run the Level 2 conversation.",
-                opener: "Let’s look at the ring together. The lowest score a finished run can produce is a 2. If it really says 1, the assessment didn’t complete. If it says 2, I know which conversation we’re in.",
-                picture: "Treat a claimed 1 as a Level 2 until the screen says otherwise. The picture below is the floor: every answer at the starting line.",
+                note: "A finished run can't land here. Seven questions score at least 7 points, and 7 is a 2. If they say 1, open the results ring with them, then run the score 2 conversation.",
+                opener: "Let's look at the ring together. The lowest score a finished run can produce is a 2. If it really says 1, the assessment didn't finish. If it says 2, I know which conversation we're in.",
+                picture: "Treat a claimed 1 as a 2 until the screen says otherwise. The picture below is the floor: every answer at the starting line.",
                 likely: [
-                    "Each team has its own tools and consoles",
-                    "Alert storms; most events get ignored",
-                    "They find out when users call the service desk",
-                    "A war-room bridge call where every team proves it isn’t them",
-                    "An engineer logs in and fixes it by hand",
-                    "Siloed — an AI agent would have nothing trustworthy to reason over"
+                    "Each team has its own tools for logs, metrics, and monitoring",
+                    "Threshold alerts flood them; the team is burned out from firefighting",
+                    "They usually can't tell which service is affected; users or the desk tell them",
+                    "Incidents run past a working day; teams search several tools for the cause",
+                    "Engineers log in and fix it by hand; the ticket is updated afterward, if at all",
+                    "They rarely spot issues early; downtime and saturation are how they find out",
+                    "AI isn't part of incident response; knowledge lives in people's heads"
                 ],
                 points: [
                     "Ask them to read the number on the ring, not the number they remember from a conversation.",
-                    "If the ring says 2 or higher, switch to that brief. Don’t improvise a level the product can’t produce.",
-                    "If they abandoned the quiz halfway, offer to finish it on the call. Six questions, about two minutes."
+                    "If the ring says 2 or higher, switch to that brief. Don't improvise a level the product can't produce.",
+                    "If they abandoned the quiz halfway, offer to finish it on the call. Seven questions, about two minutes.",
+                    "A 1 only exists if the run didn't complete. Say that plainly if they push back."
                 ],
                 ask: [
-                    "Can you pull up the results page and read the number under Maturity Level?",
-                    "Did you get through all six questions, including the last one about agentic AI?",
-                    "What did the title under the ring say?"
+                    "Can you pull up the results page and read the number under the score?",
+                    "Did you get through all seven questions, including the last one about AI agents?",
+                    "What did the title under the number say?"
                 ],
-                listen: ["I think it was a 1", "we didn’t finish", "it said siloed"],
+                listen: ["I think it was a 1", "we didn't finish", "it said reactive"],
                 pushback: [
-                    { q: "I’m sure it was a 1.", a: "The scale starts at 1, and a completed run starts at 2. The title and the line under the number will settle it in ten seconds." },
-                    { q: "We’re basically at zero.", a: "Then the Level 2 brief is the right one. That’s the floor of this model, and it has a clear first project." }
+                    { q: "I'm sure it was a 1.", a: "The scale starts at 1, and a completed run starts at 2. The title and the line under the number will settle it in ten seconds." },
+                    { q: "We're basically at zero.", a: "Then the score 2 brief is the right one. That's the floor of this model, and it has a clear first project." }
                 ],
-                next: "A finished floor score is a 2: every answer at the bottom, and the red Siloed and Reactive result.",
+                next: "A finished floor score is a 2: every answer at the bottom, and the red Reactive Monitoring result.",
                 redirect: 2
             },
             2: {
-                note: "Profile and wedge agree: Siloed and Reactive, Siloed stage. Eight levels to Level 10. The path email lists observe, then analyze, then act.",
-                opener: "A 2 means operations is still siloed and reactive. Separate consoles, alert storms, impact found when users call, root cause by bridge call, fixes done by hand. Your results called that Siloed and Reactive. We start by seeing the whole service. Until the estate and the business map are one picture, every later step reasons over fragments.",
-                picture: "Six points is the only way to finish at a 2: the first answer on every question. This is a clean baseline. They can fight a fire when a person spots it. They cannot see it coming, and they cannot explain it afterward.",
+                note: "Score 2 is the floor: seven points, the first answer on all seven questions. It's a Level 1 conversation, Reactive Monitoring. Eight to go.",
+                opener: "A 2 means operations is still reactive monitoring. Separate tools per team, alert storms, impact found when users call, root cause by bridge call, fixes done by hand. Your results called that Reactive Monitoring. We start with unified visibility. Until the estate and the business services are one picture, every later step reasons over fragments.",
+                picture: "Seven points is the only way to finish at a 2: the first answer on all seven questions. This is a clean baseline. They can fight a fire when a person spots it. They cannot see it coming, and they cannot explain it afterward.",
                 likely: [
-                    "Each team has its own tools and consoles",
-                    "Alert storms; thousands of events, most ignored",
-                    "They find out when users call the service desk",
-                    "A war-room bridge call; every team proves it isn’t them",
-                    "An engineer logs in and fixes it by hand",
-                    "Siloed"
+                    "Each team has its own tools for logs, metrics, and monitoring",
+                    "Threshold alerts flood them; the team is burned out from firefighting",
+                    "They usually can't tell which service is affected; users or the desk tell them",
+                    "Incidents regularly run past a working day; teams search several tools for the cause",
+                    "Engineers fix it by hand; the ticket is updated afterward, if at all",
+                    "They rarely spot issues early; downtime and saturation are how they find out",
+                    "Not yet — AI isn't part of incident response"
                 ],
                 points: [
                     "Treat the score as a straight answer, not a verdict. They told the truth, which makes the first project obvious.",
-                    "Lead with sight. Continuous discovery mapped to business services. BMC Helix Discovery, then BMC Helix Operations Management for one event stream.",
+                    "Lead with visibility: continuous discovery and topology-based situations. BMC Helix Discovery, then Helix Operations Management for event management.",
                     "Use their last major incident as the business case. The hours on the bridge call are the whole story.",
-                    "Name the next two chapters without selling them today: correlate noise into situations, then close the loop with automation. Eight levels is a sequence. This meeting starts chapter one.",
-                    "HelixGPT agents and auto-remediation are real, and they are a later meeting. Opening there sounds like a leap."
+                    "Name the rest of the path without selling it today: faster root cause in Level 2, then prevention in Level 3. This meeting is chapter one.",
+                    "The deck's own rule: don't pitch advanced AI to a team struggling with basic telemetry and correlation."
                 ],
                 ask: [
-                    "On the last major incident, how long was the bridge call before someone owned the cause?",
-                    "Which team owns monitoring today, and who sees the whole picture when they disagree?",
-                    "On a bad day, roughly how many alerts does an operator see, and how many get read?"
+                    "How many tools are you using? Do they give unified visibility of your operations?",
+                    "When an outage happens, how many different tools do your teams use to find the root cause?",
+                    "Are false positives and alert noise impacting your team's efficiency?"
                 ],
                 listen: ["every team has its console", "alert storm", "users called us", "bridge call", "someone logs in"],
                 pushback: [
-                    { q: "We have monitoring.", a: "A console per team is still the first answer. A 2 means the operating record is a set of separate consoles, not one view of the service." },
-                    { q: "Agentic AI is too far off for us.", a: "Drop the framing. Ask what happens when incident volume doubles. That triage load is the issue they already described, and it starts with data they can trust." }
+                    { q: "We have monitoring.", a: "A tool per team is still the first answer. A 2 means the operating record is a set of separate consoles, not one view of the service." },
+                    { q: "AI agents are too far off for us.", a: "Agreed, and the score says the same thing. The first move is trustworthy data: discovery, reconciliation, one event stream. Agents come later." }
                 ],
-                next: "A 3 is still the red Siloed and Reactive result, with one or two answers a step off the floor — often a consolidated console or hand-written dedup rules."
+                next: "A 3 is still the red Reactive Monitoring result, with one or two answers a step off the floor."
             },
             3: {
-                note: "They saw Siloed and Reactive. The wedge stage is Consolidated. Stay with Siloed and Reactive unless you are on the path diagram together.",
-                opener: "A 3 is still the red result, Siloed and Reactive. You’re a step off the floor — a consolidated console, dedup rules someone maintains, a CMDB someone checks — and operations still runs at human speed. When incidents arrive faster than the bridge call can absorb them, this queue is where they stack. That’s the line on your results page, and it’s the right one.",
-                picture: "Seven or eight points. Most answers are still at the floor, and one or two have reached basic tooling. The thing that moved is often the console or the filter rules. Events are visible somewhere. They are not correlated, and they are not tied to a service.",
+                note: "Still red, still Level 1, Reactive Monitoring. Eight to ten points. One or two answers have moved past the floor; the story is unchanged.",
+                opener: "A 3 is still the red result, Reactive Monitoring. You're a step off the floor: a consolidated console, dedup rules someone maintains, a CMDB someone checks. Operations still runs at human speed. When incidents arrive faster than the bridge call can absorb them, this queue is where they stack. That's the line on your results page.",
+                picture: "Eight to ten points. Most answers are still at the floor, and one or two have reached basic tooling. The thing that moved is often the console or the filter rules. Events are visible somewhere. They aren't correlated, and they aren't tied to a service.",
                 likely: [
                     "Still separate consoles, or the first consolidated console",
-                    "Still alert storms, or the first hand-written filter rules",
+                    "Still alert storms, or hand-written dedup and filter rules",
                     "Still users calling, or a CMDB that is often out of date",
-                    "Still the bridge call, sometimes runbooks",
+                    "Still the bridge call; sometimes runbooks",
                     "Still by hand, or the odd ad hoc script",
-                    "Siloed, sometimes Curious"
+                    "Threshold alerts catch obvious issues like downtime and saturation",
+                    "Exploring — looking at how AI could fit, but haven't started"
                 ],
                 points: [
-                    "Keep their self-picture where the product put it. Siloed and Reactive is the title they saw. Consolidated is only the diagram.",
-                    "Find the one area above the floor and use it as proof they can move. Then walk the other five, which are still consoles and bridge calls.",
+                    "Keep their self-picture where the product put it: Reactive Monitoring. The title they saw is right.",
+                    "Find the one area above the floor and use it as proof they can move. Then walk the other six, still consoles and bridge calls.",
                     "Visibility is still the lead. A consolidated console is a project. It is not a live model of business services.",
-                    "Seven levels left, in three chapters: see the whole service, know what matters, close the loop. This meeting is chapter one."
+                    "Borrow the Moody's story when it fits: 80% noise reduction, 40% MTTR reduction P1–P4. That's the move from here to Level 2."
                 ],
                 ask: [
-                    "Which part felt furthest along — monitoring, tickets, or automation?",
-                    "Is the CMDB current enough that you’d bet an incident on it?",
-                    "When an alert fires, who decides which service is affected, and how long does that take?"
+                    "Are your metrics, logs, traces, and changes linked, or do engineers manually correlate the data?",
+                    "When an alert fires, who decides which service is affected, and how long does that take?",
+                    "Have recent incidents regularly run past a working day?"
                 ],
                 listen: ["we consolidated tools", "static thresholds", "the CMDB is stale", "tribal knowledge", "ad hoc scripts"],
                 pushback: [
-                    { q: "We’re not fully siloed.", a: "Agree, and be specific. Siloed and Reactive includes teams with one console and hand-written filters. That’s a 3." },
-                    { q: "Just automate the fixes.", a: "Automating an incident you can’t explain automates the guess. Service context is what tells the playbook what to touch." }
+                    { q: "We're not fully siloed.", a: "Agree, and be specific. Reactive Monitoring includes teams with one console and hand-written filters. That's a 3." },
+                    { q: "Just automate the fixes.", a: "Automating an incident you can't explain automates the guess. Service context is what tells the playbook what to touch." }
                 ],
-                next: "A 4 turns the result amber: Correlated but Human-Driven. The wedge stays Consolidated, and the path still leads with observation."
+                next: "A 4 turns the result amber. The title becomes Proactive Operations and the focus shifts to faster root cause."
             },
             4: {
-                note: "They saw Correlated but Human-Driven, which sounds further along than the wedge. The wedge is Consolidated, and because this is below 5 the recommended path still leads with observation.",
-                opener: "A 4 is the first amber result: Correlated but Human-Driven. That title is about how the work happens, not how many tools you own. Events land in one console, filters are hand-built, the CMDB is a snapshot, root cause is runbooks and hours. You can see symptoms. You can’t yet see the service. That’s the gap this score is naming.",
-                picture: "Nine to eleven points. Mostly the second answer, with one or two areas still on the floor. All second answers is 12 points, which is a 5. So a 4 is a basic stack with holes, not a connected one. Observation is still the lead.",
+                note: "First amber score. Level 2, Proactive Operations. Eleven to thirteen points. The lead layer changes from visibility to faster root cause — but only if the answers say so.",
+                opener: "A 4 is the first amber result: Proactive Operations. That title is about how the work happens, not how many tools you own. Events land in one console, filters are hand-built, the CMDB is a snapshot, root cause is runbooks and hours. You can see symptoms. You can't yet see the service. That's the gap this score is naming.",
+                picture: "Eleven to thirteen points. Mostly second answers, with one or two areas still on the floor, or a third answer lifting one area above the middle row. A 4 is a basic stack with holes, not a connected one. The score says root cause is the next lever.",
                 likely: [
-                    "A consolidated console, with static thresholds tuned by hand",
-                    "Dedup and filter rules written and maintained by hand",
-                    "A static CMDB, often out of date",
-                    "Runbooks and tribal knowledge; usually hours",
-                    "Some scripts, run ad hoc; incidents logged manually",
-                    "Curious — interested in GenAI, but data lives in silos"
+                    "A consolidated console, or data consolidated but correlated by hand",
+                    "Event rules de-duplicate alerts, but alert fatigue is still real",
+                    "They look it up in a CMDB or inventory that is often out of date",
+                    "A few hours; SREs switch between tools and correlate data by hand",
+                    "Runbooks and scripts run ad hoc; incidents are logged in ITSM by hand",
+                    "Threshold alerts catch obvious issues such as downtime, saturation, availability",
+                    "Exploring — looking at how AI could fit, but haven't started"
                 ],
                 points: [
-                    "Honor the amber title, then define it. Human-driven means the tooling exists and people carry the context between tools.",
-                    "Don’t let the console retire the context problem. Until assets map to services, every correlation is a guess.",
+                    "Honor the amber title, then define it. Proactive Operations at a 4 means humans still carry the context between tools.",
+                    "Don't let the console retire the context problem. Until assets map to services, every correlation is a guess.",
                     "The stale CMDB is the tell. A snapshot someone checks is not a service model.",
-                    "Six levels to ten, three chapters. Lead with Discovery and Operations Management. Show AIOps as the way events become situations. Leave agentic remediation for after they trust the map."
+                    "Six to go to ten, in two chapters: faster root cause, then prevention. If service context was weak, Discovery and reconciliation come first anyway — their answers outrank the default."
                 ],
                 ask: [
-                    "When the console lights up, is the affected service known, or is it a search?",
-                    "Who maintains the dedup rules, and what happens to them during a busy week?",
-                    "Where does the last incident’s root cause get written down?"
+                    "Do your engineers suffer from alert fatigue?",
+                    "How are you using machine learning or predictive analytics today?",
+                    "Can you walk me through how you handle major incidents, from detection to resolution?"
                 ],
-                listen: ["one console now", "static thresholds", "the CMDB is stale", "hours", "we run scripts", "interested in GenAI"],
+                listen: ["one console now", "static thresholds", "the CMDB is stale", "hours", "we run scripts"],
                 pushback: [
-                    { q: "The screen says correlated, so why start with visibility?", a: "The title describes the program. The answers say events aren’t tied to services yet. Correlation without service context groups noise; it doesn’t explain it." },
-                    { q: "Our CMDB is accurate enough.", a: "That’s the second service-context answer. It’s how a program stays at a 4. The move up is a model that stays current without a person updating it." }
+                    { q: "The screen says proactive. Aren't we past the basics?", a: "The title is the phase, and a 4 is the start of it. The data is consolidated and people still correlate it by hand. Faster root cause starts with service models that stay current." },
+                    { q: "Our CMDB is accurate enough.", a: "That's the second service-context answer — how a program stays at a 4. The move up is a model that stays current without a person updating it." }
                 ],
-                next: "A 5 is the clean second-answer row, and the recommended lead flips from observation to analysis."
+                next: "A 5 is the clean second-answer row — fourteen points — and still Level 2, Proactive Operations."
             },
             5: {
-                note: "They saw Correlated but Human-Driven. The wedge calls 5–6 Correlated too, so title and diagram agree. The path no longer leads with observation.",
-                opener: "A 5 is the basic-tool score. Second choice, straight down the questions: a consolidated console with static thresholds, hand-written filters, a CMDB snapshot, runbooks, ad hoc scripts. The page called that Correlated but Human-Driven. The data can meet now. The next dollar goes to making it mean something by service, not to another console.",
-                picture: "Twelve points is a 2 on every question, and twelve rounds to a 5. Thirteen is that row plus a single point, often the console gaining dynamic baselines while still not tied to business services. Correlated here means the data can meet. It does not mean the loop closes.",
+                note: "Still amber, still Level 2, Proactive Operations. All second answers, or a close blend, is 14 points. That's the midpoint of the scale.",
+                opener: "A 5 is the basic-tool score. Second choice straight down the questions: a consolidated console, hand-written filters, a CMDB snapshot, runbooks, ad hoc scripts. The page called that Proactive Operations. The data can meet now. The next dollar goes to making it mean something by service, not to another console.",
+                picture: "Fourteen points is a 2 on every question — a clean blend. Fifteen is that row plus a point. Proactive at a 5 means the data can meet. It doesn't mean the loop closes. That's what the deck calls Level 2: proactive operations as teams modernize and add SRE practices.",
                 likely: [
-                    "A consolidated console; dynamic baselines starting to replace thresholds",
-                    "Hand-maintained dedup and filter rules",
-                    "A static CMDB that is often out of date",
-                    "Runbooks and tribal knowledge; usually hours",
-                    "Some scripts, run ad hoc; incidents logged manually",
-                    "Curious, sometimes the first step into Grounding"
+                    "Data consolidated, or five to seven observability tools with dashboards pasted into Teams and Slack",
+                    "Event rules de-duplicate alerts, but alert fatigue is still real",
+                    "CMDB or inventory, often out of date",
+                    "A few hours; SREs switch between tools and correlate data by hand",
+                    "Runbooks and scripts run ad hoc; incidents logged in ITSM by hand",
+                    "Threshold alerts catch obvious issues such as downtime, saturation, availability",
+                    "Exploring, sometimes the first step into Assisting"
                 ],
                 points: [
                     "If they remember picking the second box every time, the math checks out. Tell them that. It builds trust.",
-                    "Their screen’s warning still applies: people stitch together context, find the cause, and run the fix. Analysis is how they leave that sentence.",
-                    "Default lead: BMC Helix AIOps, HelixGPT, and Helix ServiceOps. The console stays. AIOps turns events into situations.",
-                    "Five levels left, two chapters from here: know what matters, then close the loop.",
-                    "If they tell you observability was the weak answer, believe them and put Discovery and Operations Management first. Their answers outrank the default."
+                    "Their screen's warning still applies: people stitch together context, find the cause, and run the fix. Faster root cause is how they leave that sentence.",
+                    "Default lead: service models, noise reduction into situations, ITSM integration, then AI agents. BMC Helix AIOps, HelixGPT, Helix ServiceOps.",
+                    "Five to go, two chapters from here: faster root cause, then prevention.",
+                    "Maccabi is the story that fits: proactive notification of 90% of issues, zero disruptions a month — a Level 2 story."
                 ],
                 ask: [
-                    "When a burst of events lands, who decides what it means and what to touch?",
-                    "Are you correlating by service, or by rules someone wrote by hand?",
-                    "Do incidents get created from events, or does someone type them?"
+                    "Do your engineers suffer from alert fatigue?",
+                    "Can you walk me through how you handle major incidents, from detection to resolution?",
+                    "What level of automation do you currently have in your workflows, and where do you see gaps?"
                 ],
-                listen: ["second box", "dynamic baselines", "static thresholds", "we check the CMDB", "someone types the ticket"],
+                listen: ["second box", "five to seven tools", "static thresholds", "we check the CMDB", "someone types the ticket"],
                 pushback: [
-                    { q: "We need better monitoring.", a: "The assessor assumes a console. A 5’s gap is the meaning after the event. AIOps correlates what the console already collects." },
-                    { q: "Observability isn’t finished.", a: "Then start there. The default at 5 is analysis because the model thinks sight is good enough to build on. A weak observability answer changes the order." }
+                    { q: "We need better monitoring.", a: "The assessor assumes a console. A 5's gap is the meaning after the event. AIOps correlates what the console already collects." },
+                    { q: "Observability isn't finished.", a: "Then start there. The default at 5 is root cause because the model thinks sight is good enough to build on. A weak visibility answer changes the order." }
                 ],
-                next: "A 6 is the second-answer row plus two to four points. A couple of answers have stepped up — often correlation or topology — and triage or the fix is still a person."
+                next: "A 6 is the second-answer row plus two to four points. A couple of answers have stepped up, and triage or the fix is still a person."
             },
             6: {
-                note: "They saw Correlated but Human-Driven. The wedge calls this Correlated. Don’t rename their result. Four levels is two chapters: analyze, then act.",
-                opener: "Six out of ten is Correlated but Human-Driven — the data meets, and a person still does the triage. You’re past the consoles. Events are starting to group into situations, and someone still reads every one. Four levels to ten is two moves: know what matters, then close the loop.",
-                picture: "Fourteen to sixteen points: the second-answer row plus two to four points, or the third answer on all five operating questions with the readiness slider at the floor. A 6 is a real program with the stall in the decision. It is also a blend, so two customers at 6 can need different products.",
+                note: "A 6 is a Level 2 conversation. Amber, Proactive Operations on their screen. Their title is right: the data meets, and a person still does the triage and the fix.",
+                opener: "A 6 is a Level 2 conversation: Proactive Operations. You’re past the consoles. Events group into situations, and someone still reads every one before anything happens. That’s the stall, and closing it is most of the way to an 8.",
+                picture: "Sixteen to eighteen points. A real program with a manual last mile: correlation and service context are partly there, and the decision still sits with a person. Two customers at 6 can need different products, so ask which answer felt weakest.",
                 likely: [
-                    "Full-stack observability with dynamic baselines, not tied to business services",
-                    "ML correlation groups events; triage is still manual",
-                    "Discovered topology, or still a CMDB snapshot",
-                    "Runbooks, or the first probable-cause analysis",
-                    "Ad hoc scripts, or event-triggered automation with approvals",
-                    "Curious or Grounding"
+                    "Data is consolidated into a single pane of glass, but engineers still correlate metrics, logs, traces, and changes by hand.",
+                    "Event rules classify and de-duplicate alerts, but alert fatigue is still real.",
+                    "Continuous discovery and reconciled topology keep service models current for our critical services.",
+                    "A few hours. SREs switch between tools and correlate data by hand to find the root cause.",
+                    "Runbooks and scripts run ad hoc. Incidents are logged in ITSM by hand.",
+                    "Anomaly detection flags many issues before impact, but we don’t forecast failures or score change risk.",
+                    "Exploring"
                 ],
                 points: [
-                    "Open on the win. They are past the consolidated console. The stall is the decision, and they feel it every bad day.",
+                    "Open on the win: they are past the console. The stall is the decision, and they feel it on every bad day.",
                     "Put it in their words: the noise is grouped, and a person still reads every situation before anything happens.",
-                    "Ask which question felt worst before you name a product. A 6 can hide a 1 on remediation and a 4 on noise, or the reverse.",
-                    "Sell the decision layer now: Helix AIOps for service models and situations, HelixGPT for probable cause and the next action, ServiceOps to tie the work together. Intelligent Automation and ITSM are the follow-on, once they trust the call."
+                    "Ask which question felt worst before naming a product. Helix AIOps for service models and situations, HelixGPT for probable cause and next action, ServiceOps to align ops and service management.",
+                    "ITSM belongs in this phase too: incidents created automatically with operational context, and remediation with a human in the loop. Show that as proof the root cause turns into action."
                 ],
                 ask: [
-                    "On a bad day, how many situations does an operator read before one matters?",
-                    "When a situation fires, who decides the cause, and how long does that take?",
-                    "After the cause is known, do the fix and the ticket happen in one flow or three?"
+                    "Do your engineers suffer from alert fatigue?",
+                    "Are you looking to reduce tool sprawl in your team’s stack?",
+                    "Can you walk me through a major incident, from detection to resolution, and where a person carries it?"
                 ],
-                listen: ["ML groups them", "we still triage", "someone reads it", "approval step", "it auto-creates the ticket"],
+                listen: ["single pane of glass", "we still correlate by hand", "alert fatigue is real", "a few hours", "someone reads it", "auto-creates the ticket"],
                 pushback: [
-                    { q: "We already have ML correlation.", a: "That’s the third answer on noise, and it’s part of why this is a 6. The fourth answer is situations with probable cause raised before users notice. A person can’t be the last mile on volume." },
-                    { q: "Can you just automate the triage?", a: "Triage on a weak service model automates the wrong call first. The dynamic service model is what tells the automation where to look." }
+                    { q: "We already have ML correlation.", a: "Agree, and name the next rung. Grouping alerts is the third answer. Situations with service impact and probable cause attached are the fourth. People can’t be the last mile on volume." },
+                    { q: "Just automate the triage.", a: "Automating triage on a weak service model automates the wrong call first. A live model of critical services is what tells the automation where to look." }
                 ],
-                next: "A 7 is the third answer on almost every question. One level after that, the results title turns green."
+                next: "A 7 is the third answer on almost every question. One more point after that, the title turns green: Level 3, Preventive Operations.",
+                redirect: null
             },
             7: {
-                note: "They saw Correlated but Human-Driven. The wedge calls 7–8 Predictive. Use their title. Two chapters left: analyze, then act. They are one level below the green title.",
-                opener: "A 7 is good signal with human hands on the fix. Dynamic baselines are real. Situations narrow fast. Probable cause and change correlation land quickly, and then a person decides and a person runs the fix. One more level and the results page starts calling this approaching autonomous. The remaining work is the decision and the loop.",
-                picture: "Seventeen or eighteen points. Eighteen is a 3 on every question, including the readiness slider at Grounding. Seventeen is that row minus a point. Signal is good. The loop still depends on a human at the fix. The title is still amber on purpose: prediction without automation is a smarter queue, not a closed loop.",
+                note: "A 7 is a Level 2 conversation. Amber, Proactive Operations. One point from the green Level 3 title — the remaining work is the decision and the loop.",
+                opener: "A 7 is a Level 2 conversation: Proactive Operations. Good signal with human hands on the fix. Situations narrow fast, probable cause lands quickly, and then a person decides and a person runs the fix. One more point and the title turns green: Level 3, Preventive Operations.",
+                picture: "Nineteen to twenty-one points. Signal is good. Automation is real but carries approval steps, and prevention is partial. Prediction without automation is a smarter queue, not a closed loop — which is why the title is still amber.",
                 likely: [
-                    "Full-stack observability with dynamic baselines, not tied to business services",
-                    "ML correlation into situations; triage still manual",
-                    "Discovered topology stays current; impact assessed by a person",
-                    "Probable-cause and change correlation narrow it fast",
-                    "Event-triggered automation with approval steps; incidents auto-created",
-                    "Grounding, sometimes Piloting"
+                    "Data is consolidated into a single pane of glass, but engineers still correlate metrics, logs, traces, and changes by hand.",
+                    "AI groups redundant alerts into situations, and most of the noise is gone.",
+                    "Continuous discovery and reconciled topology keep service models current for our critical services.",
+                    "AI-driven root cause analysis isolates the cause in minutes, using causal context and historical data.",
+                    "ITSM incidents are created automatically with operational context, and remediation runs with a human in the loop.",
+                    "Anomaly detection flags many issues before impact, but we don’t forecast failures or score change risk.",
+                    "Assisting"
                 ],
                 points: [
-                    "The ambition you can say out loud is true: Level 8 changes the title on the page. They are one step from the green result.",
+                    "Say the ambition out loud: this is one step from the green result. A Level 3 conversation is the next meeting, and they can get there.",
                     "If the decision is still a queue, lead with Helix AIOps, HelixGPT, and ServiceOps. The probable cause exists. It just isn’t delivered with the fix.",
-                    "Put execution on the table in the same meeting. The approval step and the manual fix are why this is a 7 and not an 8.",
-                    "When they say approvals can’t go away, separate the exception from the routine. Intelligent Automation and Helix ITSM keep their rule and stop the routine from waiting."
+                    "Put execution on the table in the same meeting. The approval step and the manual fix are the gap.",
+                    "When they say approvals can’t go away, separate the exception from the routine. Intelligent Automation and Helix ITSM keep their rule and stop the routine from waiting.",
+                    "The next chapter is prevention: predictive analytics, change risk prediction, and building trust in AI agents."
                 ],
                 ask: [
-                    "Where does a person still touch a major incident — the decision, the fix, or the ticket?",
-                    "Is the service model live, or a CMDB someone updates after the fact?",
+                    "How are you using machine learning or predictive analytics today?",
+                    "What level of automation do you currently have in your workflows, and where do you see gaps?",
                     "What would have to be true for a high-confidence probable cause to trigger its own remediation?"
                 ],
-                listen: ["probable cause", "someone still approves", "change correlation", "we run the fix", "auto-created"],
+                listen: ["probable cause in minutes", "someone still approves", "human in the loop", "auto-created ticket", "most of the noise is gone"],
                 pushback: [
-                    { q: "We already find the cause fast.", a: "That’s the third answer on root cause. The fourth is GenAI explaining it and recommending the fix in minutes. Fast is the middle. Actionable is the top." },
+                    { q: "We already find the cause fast.", a: "That’s the third answer on root cause. The fourth is agents analyzing situations and swarming the right experts, so major incidents stay within SLA. Fast is the middle. Actionable is the top." },
                     { q: "Approvals can’t disappear.", a: "Don’t argue the policy. Split the exception from the routine path. Their rule stays. The routine stops waiting on a person to retype it." }
                 ],
-                next: "An 8 is the first Approaching Autonomous Operations result. The recommended path drops to execution only: investigate and act, as one loop."
+                next: "An 8 is the first Level 3 result, Preventive Operations. The recommended path drops to prevention only: predict, then trust the agents.",
+                redirect: null
             },
             8: {
-                note: "They saw Approaching Autonomous Operations. The wedge stage is Predictive, not Autonomous. Autonomous on the diagram is 9–10. Two levels to go, and the path leads with execution.",
-                opener: "An 8 is the first green result: Approaching Autonomous Operations. Service models score health and impact. Cause lands quickly. Automation is real, and the loop still has a person at the fix or the close. Two levels to ten, and they’re both the last handoff — the approval, the action, or the ticket closing itself.",
-                picture: "Nineteen to twenty-one points. They are past the third-answer row. Several capabilities are at the top, often dynamic service models, minute-level cause, or GenAI explanation. At least one workflow still waits on a person. Readiness is often Piloting. There is no single pattern. Ask which answer was short of the top.",
+                note: "An 8 is a Level 3 conversation. Green, Preventive Operations on their screen. Lead with prevention. Don’t re-pitch visibility — an 8 who gets an observability pitch will tune out.",
+                opener: "An 8 is a Level 3 conversation: Preventive Operations. Service models score health and impact. Cause lands quickly. Automation is real, and something still waits on a person. Two to go to ten, and the work is prevention: forecast failures, score change risk, and prove the agents right.",
+                picture: "Twenty-two to twenty-four points. They are past the third-answer row. Several capabilities are at the top, often service models, minutes-level cause, or noise down 80%+. Readiness is often Piloting. Ask which answer was short of the top before you assume.",
                 likely: [
-                    "Often the top answer: unified, mapped to business services, predictive",
-                    "Often the top answer: situations raised before users notice",
-                    "Dynamic service models score health and impact in real time",
-                    "GenAI explains it and recommends the fix — or still a person, if this was the miss",
-                    "Automation is real; the approval step may still be manual",
-                    "Usually Piloting"
+                    "A single source of operational truth: metrics, logs, traces, events, and changes are linked and mapped to business services.",
+                    "Noise is down 80%+, and every situation carries service impact and the context to act on it.",
+                    "Every critical service is modeled across cloud and on-prem, so business impact and root cause are tied to a service instantly.",
+                    "AI-driven root cause analysis isolates the cause in minutes, using causal context and historical data.",
+                    "ITSM incidents are created automatically with operational context, and remediation runs with a human in the loop.",
+                    "Anomaly detection flags many issues before impact, but we don’t forecast failures or score change risk.",
+                    "Piloting"
                 ],
                 points: [
-                    "Don’t re-diagnose them. An 8 who gets an observability pitch will tune out. Open on the green result they already saw.",
-                    "The gap to 10 is the loop. Intelligent Automation, Automation for Servers, and BMC Helix ITSM.",
-                    "Bring HelixGPT only if root cause or the readiness slider was the answer short of the top. Ask before you assume.",
-                    "Scope production caution honestly. Start with the high-confidence, low-exception estate. The control plane is ITSM plus automation, and their change policy stays in it."
+                    "Open on the green result they already saw. This is prevention, not visibility. Confirm the loop before you expand it.",
+                    "Lead with predictive analytics and change risk prediction. The KPI conversation is issues predicted before impact and change failure rate.",
+                    "If root cause or readiness was the miss, bring HelixGPT and Ops Swarmer forward. Ask before you assume.",
+                    "Scope production caution honestly. Start where confidence is high and exceptions are rare. Their change policy stays in the loop.",
+                    "The 10 is trust: agents investigating and remediating with people confirming the work and feeding corrections back."
                 ],
                 ask: [
-                    "Walk one recent major incident from the first situation to the closed ticket. Where did a person have to carry it?",
-                    "Which remediations are already automated, and which still wait on an approval built by hand?",
-                    "If event volume doubled tomorrow, which step is still staffed for last year’s pace?"
+                    "How effective are you in spotting issues before your customers do?",
+                    "How effective are you in predicting change risk in your production environment?",
+                    "What challenges are you facing in implementing AI agents in production?"
                 ],
-                listen: ["almost there", "we automate the common ones", "someone approves", "change window", "service model"],
+                listen: ["almost there", "we predict some of it", "someone approves", "change window", "piloting agents"],
                 pushback: [
-                    { q: "The screen says we’re close, so why a project?", a: "Close is the execution layer. Two levels is the difference between automated steps and a loop that finishes without a handoff." },
-                    { q: "We can’t automate production changes.", a: "Start where confidence is high and exceptions are rare. Automation for Servers and Helix ITSM carry the change policy. They don’t route around it." }
+                    { q: "The screen says we’re close, so why a project?", a: "Two points is the difference between predicting some failures and predicting them reliably, and between agents that investigate and agents trusted to act. That is the proposal." },
+                    { q: "We can’t automate production changes.", a: "Start where confidence is high and exceptions are rare. Change risk prediction and human-in-the-loop remediation carry the policy. They don’t route around it." }
                 ],
-                next: "A 9 is one missing behavior short of the target. Name that behavior. That is the proposal."
+                next: "A 9 is one missing behavior short of the target. Name that behavior. That is the proposal.",
+                redirect: null
             },
             9: {
-                note: "They saw Approaching Autonomous Operations, and the line says 1 level to Level 10. The wedge says Autonomous. Prefer their title. The path lists execution only.",
-                opener: "A 9 is one behavior short of the target. Almost every answer is at the top, and one isn’t — often the loop still has a person at the fix or the ticket, or the readiness slider is still Piloting rather than Agent-ready. The results page says one level to Level 10. Tell me which question you hesitated on. That’s the conversation.",
-                picture: "Twenty-two or twenty-three points. A clean sweep of the five operating questions plus the slider at Grounding is 23, a 9. Four top answers, one third answer, and the slider at Piloting is also 23. Someone can mark Agent-ready and still be a 9 if two answers dropped. The miss is specific. Find it before you propose a platform.",
+                note: "A 9 is a Level 3 conversation. Green, Preventive Operations, and the line says 1 to go to 10. Find the one answer short of the top before you propose anything.",
+                opener: "A 9 is a Level 3 conversation: Preventive Operations. Almost every answer is at the top, and one isn’t — often the loop still has a person at the fix, or the agents are still Piloting rather than Trusted. The line says 1 to go to 10. Tell me which question you hesitated on.",
+                picture: "Twenty-five to twenty-seven points. A clean sweep of the six operating questions plus the slider at Not yet is 25, a 9. Top answers plus Assisting is 27, also a 9. The miss is specific. Find it before you propose a platform.",
                 likely: [
-                    "Usually the top answer — unified, mapped to business services",
-                    "Usually the top answer — situations before users notice",
-                    "Dynamic service models score health and impact in real time",
-                    "Usually GenAI explains it and recommends the fix",
+                    "A single source of operational truth: metrics, logs, traces, events, and changes are linked and mapped to business services.",
+                    "Noise is down 80%+, and every situation carries service impact and the context to act on it.",
+                    "Every critical service is modeled across cloud and on-prem, so business impact and root cause are tied to a service instantly.",
+                    "AI agents analyze situations, find the root cause, and swarm the right experts. Major incidents stay within SLA.",
                     "The common miss — not yet remediating and closing the ticket with no one in the middle",
-                    "Often Piloting. Agent-ready plus a slip elsewhere is still a 9."
+                    "Predictive analytics forecasts degradation and saturation, and change risk is predicted before we deploy to production.",
+                    "Assisting, sometimes Piloting"
                 ],
                 points: [
                     "Ask for the answer that wasn’t the top box. Propose that, and little else.",
-                    "If the miss is readiness, the story is trust and governance: the loop works today, and hasn’t been proven with agents investigating and acting.",
+                    "If the miss is agent readiness, the story is trust and governance: the loop works, and hasn’t been proven with agents investigating and acting.",
                     "If the miss is remediation, sell that product against that workflow. Approval paths and exception coverage are the scope.",
-                    "Keep a peer tone. They are at the autonomous end of the diagram, one level from the line that says Target reached."
+                    "Keep a peer tone. They are one point from the line that says Target reached."
                 ],
                 ask: [
                     "Which question did you hesitate on?",
-                    "What still requires a human exception — and has that exception become the rule?",
+                    "How is knowledge currently captured, shared, and reused within your organization?",
                     "What would you need to see in a pilot to call the loop closed?"
                 ],
-                listen: ["basically a 10", "except for", "we still approve", "one workflow left", "piloting"],
+                listen: ["basically a 10", "except for", "we still approve", "one workflow left", "agents are piloting"],
                 pushback: [
-                    { q: "We’re basically a 10.", a: "The ring is one level short, which on this model is a specific missing behavior. Let’s name it. Then the proposal is that behavior." },
-                    { q: "We don’t want another platform.", a: "Then don’t bring one. Map the missing behavior to the product they already own and aren’t using on that last step — usually remediation, server automation coverage, or HelixGPT on the exception path." }
+                    { q: "We’re basically a 10.", a: "The number is one short, which on this model is a specific missing behavior. Let’s name it. Then the proposal is that behavior." },
+                    { q: "We don’t want another platform.", a: "Then don’t bring one. Map the missing behavior to what they already own and aren’t using on that last step — usually remediation coverage or Ops Swarmer on the exception path." }
                 ],
-                next: "A 10 changes the line under the number to Target reached. The title stays Approaching Autonomous Operations. Twenty-four or twenty-five points."
+                next: "A 10 changes the line under the number to Target reached. Twenty-eight or twenty-nine points.",
+                redirect: null
             },
             10: {
-                note: "The title stays Approaching Autonomous Operations, the same title they would have seen at 8 and 9. The line under the number changes to Target reached. Quote that line. A slider at Piloting, plus the top answer on the other five, is already a 10. Don’t tell them they claimed Agent-ready unless they did.",
-                opener: "A 10 means the line under your score says Target reached. You’re at the closed loop this model measures: unified observability mapped to services, noise cut before users notice, and known issues remediating and closing their own tickets. Walk me through one recent incident, from the first signal to the ticket closing itself.",
-                picture: "Twenty-four or twenty-five points. The five operating questions are at the top. The readiness slider is Piloting or Agent-ready. There is no level above this. The honest work is confirming the loop is operational, then coverage, exception paths, and whether it holds when volume spikes.",
+                note: "A 10 is a Level 3 conversation. Green, Preventive Operations, and the line says Target reached. Quote that line. Don’t manufacture a gap that isn’t there.",
+                opener: "A 10 means the line under your score says Target reached. You’re at the closed loop this model measures: one source of operational truth, noise handled, failures forecast, and AI agents in the loop. Walk me through one recent incident, from the first signal to the ticket closing itself.",
+                picture: "Twenty-eight or twenty-nine points. The six operating questions are at the top. The slider is Piloting or Trusted. There is no level above this. The honest work is confirming the loop is operational, then coverage, exception paths, and a surge test.",
                 likely: [
-                    "Unified observability, mapped to business services, predictive alerts",
-                    "Noise cut by 90%+; situations raised before users notice",
-                    "Dynamic service models score health and business impact in real time",
-                    "GenAI explains the situation, probable cause, changes, and fix in minutes",
-                    "Known issues auto-remediate; incidents and changes closed automatically",
-                    "Piloting or Agent-ready. Piloting is enough for a 10 if the rest are at the top."
+                    "A single source of operational truth: metrics, logs, traces, events, and changes are linked and mapped to business services.",
+                    "Noise is down 80%+, and every situation carries service impact and the context to act on it.",
+                    "Every critical service is modeled across cloud and on-prem, so business impact and root cause are tied to a service instantly.",
+                    "AI agents analyze situations, find the root cause, and swarm the right experts. Major incidents stay within SLA.",
+                    "Self-healing: known issues remediate automatically using captured operational knowledge, including business-critical vulnerabilities.",
+                    "Predictive analytics forecasts degradation and saturation, and change risk is predicted before we deploy to production.",
+                    "Piloting or Trusted. Piloting is enough for a 10 if the rest are at the top."
                 ],
                 points: [
                     "Confirm it’s operational. One incident, first signal to a ticket that closed without a war room, is the test.",
-                    "Quote Target reached. The title did not get a special line at 10, so the gap line is the headline.",
-                    "If the walkthrough holds, the offer is to keep the loop healthy: the estate it doesn’t cover yet, the exception path that has become a habit, and a surge test.",
-                    "Expand only where they light up — AIOps in the next domain, HelixGPT agents on more incident types, Innovation Studio for a workflow they still maintain by hand.",
+                    "Quote Target reached. The title did not get a special line at 10, so that gap line is the headline.",
+                    "If the walkthrough holds, the offer is keeping the loop healthy: the estate it doesn’t cover yet, the exception that became a habit, and a surge test.",
+                    "Expand only where they light up — predictive analytics in the next domain, agents on more incident types, vulnerability visibility beside critical services.",
                     "A reference conversation is fair if the walkthrough holds. A manufactured gap is not. If coverage and exceptions are solid, say so."
                 ],
                 ask: [
@@ -554,11 +775,12 @@
                     { q: "So you have nothing to sell me.", a: "There’s nothing to fix in the score. There is coverage, the exception list, and proof under load. If those are solid, say so and stay close. Trust is a fine outcome of this call." },
                     { q: "Our board thinks a 10 means no outages.", a: "The score is operating maturity. Incidents still happen. The difference at 10 is that the loop absorbs them instead of parking them in a bridge call." }
                 ],
-                next: "There is no 11. The follow-on is coverage, the exception list, and a surge test — or an honest “you’re in good shape.”"
+                next: "There is no 11. The follow-on is coverage, the exception list, and a surge test — or an honest “you’re in good shape.”",
+                redirect: null
             }
         };
 
-        const TAGS = ["Observability", "Event noise", "Service context", "Root cause", "Remediation", "Agentic readiness"];
+        const TAGS = ["Unified visibility", "Alert noise", "Service context", "Root cause & MTTR", "Automation", "Prevention", "AI agents"];
 
         const state = { mode: "one", level: null };
 
@@ -580,14 +802,17 @@
 
         function gapText(level) {
             if (level >= 10) return "Target reached";
-            const gap = 10 - level;
-            return `${gap} level${gap === 1 ? "" : "s"} to Level 10`;
+            return `${10 - level} to go to 10`;
         }
+
+        // Same formula as calculateResults() in index.html.
+        const MIN_POINTS = QUESTIONS.reduce((sum, q) => sum + Math.min(...q.options.map((o) => o.points)), 0);
+        const MAX_POINTS = QUESTIONS.reduce((sum, q) => sum + Math.max(...q.options.map((o) => o.points)), 0);
 
         function pointsFor(level) {
             const hits = [];
-            for (let score = 6; score <= 25; score += 1) {
-                if (Math.max(1, Math.round((score / 25) * 10)) === level) hits.push(score);
+            for (let score = MIN_POINTS; score <= MAX_POINTS; score += 1) {
+                if (Math.max(1, Math.round((score / MAX_POINTS) * 10)) === level) hits.push(score);
             }
             return hits;
         }
@@ -595,31 +820,32 @@
         function formatPoints(level) {
             const hits = pointsFor(level);
             if (!hits.length) return "Not a finished score";
-            if (hits.length === 1) return `${hits[0]} of 25 points`;
+            if (hits.length === 1) return `${hits[0]} of ${MAX_POINTS} points`;
             const contiguous = hits.every((value, index) => index === 0 || value === hits[index - 1] + 1);
-            if (contiguous) return `${hits[0]}\u2013${hits[hits.length - 1]} of 25 points`;
-            return `${hits.join(", ")} of 25 points`;
+            if (contiguous) return `${hits[0]}\u2013${hits[hits.length - 1]} of ${MAX_POINTS} points`;
+            return `${hits.join(", ")} of ${MAX_POINTS} points`;
         }
 
+        // Matches pathSummary() in index.html.
         function pathItems(level) {
             if (level >= 10) {
-                return ["You\u2019re already at the target state. Keep the closed loop healthy \u2014 service-aware observability, low-noise situations with explained cause, and governed auto-remediation."];
+                return ["They\u2019ve reached the top of the model. Keep prevention healthy: predictive analytics, change risk prediction, and AI agents they check and keep teaching."];
             }
             const focus = [];
-            if (level < 5) {
-                focus.push("Observe \u2014 unified observability and live service models (BMC Helix Discovery, BMC Helix Operations Management)");
+            if (level < 4) {
+                focus.push("Unified visibility \u2014 consolidate tools and turn alert noise into insight (continuous discovery, data reconciliation, event management, situations)");
             }
             if (level < 8) {
-                focus.push("Analyze \u2014 correlate noise into situations and explain root cause (BMC Helix AIOps, BMC HelixGPT, BMC Helix ServiceOps)");
+                focus.push("Faster root cause \u2014 triage and isolate root cause in minutes (service models, noise reduction, AI agents, ITSM integration)");
             }
-            focus.push("Act \u2014 automate remediation and ITSM handoffs (Intelligent Automation, Automation for Servers, BMC Helix ITSM)");
+            focus.push("Prevention \u2014 stop outages before they hit (predictive analytics, change risk prediction, vulnerability visibility, automated remediation)");
             return focus;
         }
 
         function layerStates(level) {
             if (level >= 10) return ["keep", "keep", "keep"];
             const order = [];
-            if (level < 5) order.push(0);
+            if (level < 4) order.push(0);
             if (level < 8) order.push(1);
             order.push(2);
             return [0, 1, 2].map((index) => {
@@ -671,6 +897,105 @@
                 </div>`;
         }
 
+        function listHtml(items, icon, color) {
+            return `<ul class="space-y-2">${items.map((line) => `
+                <li class="flex gap-2.5 text-sm text-slate-200 leading-relaxed">
+                    <i data-lucide="${icon}" class="w-4 h-4 mt-0.5 shrink-0 ${color}"></i>
+                    <span>${esc(line)}</span>
+                </li>`).join("")}</ul>`;
+        }
+
+        function playbookHtml(level) {
+            const profile = profileFor(level);
+            const book = PLAYBOOK[profile.phase];
+            const story = book.story;
+            return `
+                <section class="rounded-3xl border border-slate-700 bg-slate-800/40 p-6 md:p-8 space-y-6">
+                    <div class="flex flex-wrap items-start justify-between gap-3">
+                        <div>
+                            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-bmc-orange">Messaging playbook</p>
+                            <h3 class="text-xl md:text-2xl font-bold text-white mt-1">${esc(profile.title)}</h3>
+                            <p class="text-xs text-slate-500 mt-1">From “AIOps Maturity-Based Messaging,” Sept 2026. Shape the message and the proof of value to this level.</p>
+                        </div>
+                        <span class="inline-flex px-2.5 py-1 rounded-full border text-xs font-bold ${profile.chip}">${esc(book.focus)}</span>
+                    </div>
+
+                    <p class="text-slate-300 leading-relaxed">${esc(book.spot)}</p>
+
+                    <div class="grid lg:grid-cols-3 gap-4">
+                        <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-4">
+                            <h4 class="text-xs font-bold uppercase tracking-[0.16em] text-slate-400 mb-3">Pain points</h4>
+                            ${listHtml(book.pain, "alert-triangle", "text-red-400")}
+                        </div>
+                        <div class="rounded-2xl border border-bmc-orange/30 bg-bmc-orange/5 p-4">
+                            <h4 class="text-xs font-bold uppercase tracking-[0.16em] text-bmc-orange mb-3">Sales message</h4>
+                            <p class="text-sm text-slate-200 leading-relaxed">${esc(book.message)}</p>
+                            <h4 class="text-xs font-bold uppercase tracking-[0.16em] text-slate-400 mt-4 mb-2">How Helix helps</h4>
+                            ${listHtml(book.helix, "check", "text-bmc-blue")}
+                        </div>
+                        <div class="rounded-2xl border border-slate-700 bg-slate-900/40 p-4">
+                            <h4 class="text-xs font-bold uppercase tracking-[0.16em] text-slate-400 mb-3">Opportunities for growth</h4>
+                            ${listHtml(book.growth, "trending-up", "text-emerald-400")}
+                            <h4 class="text-xs font-bold uppercase tracking-[0.16em] text-slate-400 mt-4 mb-2">Next step</h4>
+                            <p class="text-sm text-slate-200 leading-relaxed">${esc(book.nextStep)}</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-[0.16em] text-slate-400 mb-3">Discovery questions to confirm Level ${profile.phase}</h4>
+                        ${listHtml(book.discovery, "message-circle", "text-bmc-orange")}
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-[0.16em] text-slate-400 mb-1">Target buying committee</h4>
+                        <p class="text-xs text-slate-500 mb-3">The executive signs; the practitioners you talk to are the ones who feel these pains.</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm border border-slate-700 rounded-xl overflow-hidden">
+                                <thead class="bg-slate-900 text-[11px] uppercase tracking-wider text-slate-500">
+                                    <tr><th class="px-3 py-2 font-bold">Title</th><th class="px-3 py-2 font-bold">Challenges</th><th class="px-3 py-2 font-bold">Desired outcomes</th></tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800">
+                                    ${book.committee.map((row) => `<tr class="text-slate-300 align-top">
+                                        <td class="px-3 py-2 font-semibold text-white whitespace-nowrap">${esc(row.title)}</td>
+                                        <td class="px-3 py-2">${esc(row.challenge)}</td>
+                                        <td class="px-3 py-2">${esc(row.outcome)}</td>
+                                    </tr>`).join("")}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-[0.16em] text-slate-400 mb-3">Value drivers and KPIs for the proof of value</h4>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            ${book.drivers.map((driver) => `
+                                <div class="rounded-2xl border border-slate-700 bg-slate-900/50 p-3.5">
+                                    <p class="text-sm font-bold text-white">${esc(driver.name)}</p>
+                                    <p class="text-xs text-slate-400 mt-1 leading-relaxed">${esc(driver.desc)}</p>
+                                    <div class="flex flex-wrap gap-1.5 mt-3">
+                                        ${driver.kpis.map((kpi) => `<span class="px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600 text-[11px] text-slate-300">${esc(kpi)}</span>`).join("")}
+                                    </div>
+                                </div>
+                            `).join("")}
+                        </div>
+                    </div>
+
+                    ${story ? `
+                    <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <h4 class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-300">Customer story · ${esc(story.customer)}</h4>
+                            ${story.url ? `<a href="${esc(story.url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs font-bold text-emerald-300 hover:text-white">Read the story <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></a>` : ""}
+                        </div>
+                        <div class="grid md:grid-cols-3 gap-4 text-sm">
+                            <div><p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Pain points</p><p class="text-slate-300 leading-relaxed">${esc(story.before)}</p></div>
+                            <div><p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">What Helix did</p><p class="text-slate-300 leading-relaxed">${esc(story.after)}</p></div>
+                            <div><p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">Outcomes</p>${listHtml(story.outcomes, "check-circle", "text-emerald-400")}</div>
+                        </div>
+                    </div>` : `
+                    <p class="text-xs text-slate-500">The deck has no Level 3 customer story. Use Maccabi Health Services (a Level 2 story that is moving to agentic AI) only if it fits.</p>`}
+                </section>`;
+        }
+
         function article(level) {
             const data = LEVELS[level];
             const profile = profileFor(level);
@@ -682,7 +1007,7 @@
             <article id="level-${level}" class="rise score-scroll space-y-6">
                 <div class="grid lg:grid-cols-5 gap-5">
                     <div class="lg:col-span-2 rounded-3xl border border-slate-700 bg-slate-800/60 p-6 md:p-8">
-                        <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-3">Maturity level</p>
+                        <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-3">Maturity score</p>
                         <div class="flex items-end gap-2">
                             <span class="text-7xl md:text-8xl font-black leading-none text-white">${level}</span>
                             <span class="text-2xl font-bold text-slate-500 mb-2">/10</span>
@@ -691,10 +1016,10 @@
                         <p class="text-sm text-slate-400">${esc(formatPoints(level))}</p>
                         <div class="flex flex-wrap gap-2 mt-5">
                             <span class="inline-flex px-2.5 py-1 rounded-full border text-xs font-bold ${profile.chip}">${esc(profile.title)}</span>
-                            <span class="inline-flex px-2.5 py-1 rounded-full border border-slate-600 text-xs font-bold text-slate-300">Wedge · ${esc(wedge.label)} · L${wedge.min}\u2013${wedge.max}</span>
+                            <span class="inline-flex px-2.5 py-1 rounded-full border border-slate-600 text-xs font-bold text-slate-300">Scores ${wedge.min}\u2013${wedge.max}</span>
                         </div>
                         <div class="mt-6">${wedgeHtml(level)}</div>
-                        ${data.redirect ? `<button type="button" data-pick="${data.redirect}" class="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-bmc-blue hover:bg-bmc-blueHover text-white text-sm font-bold">Open the Level ${data.redirect} brief <i data-lucide="arrow-right" class="w-4 h-4"></i></button>` : ""}
+                        ${data.redirect ? `<button type="button" data-pick="${data.redirect}" class="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-bmc-blue hover:bg-bmc-blueHover text-white text-sm font-bold">Open the score ${data.redirect} brief <i data-lucide="arrow-right" class="w-4 h-4"></i></button>` : ""}
                     </div>
                     <div class="lg:col-span-3 rounded-3xl border border-slate-700 bg-slate-800 p-6 md:p-8 relative overflow-hidden">
                         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 blur-[90px] opacity-20 ${profile.bar}"></div>
@@ -709,7 +1034,7 @@
                                     <div class="h-full ${profile.bar}" style="width:${level * 10}%"></div>
                                 </div>
                                 <div class="flex justify-between mt-2 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-                                    <span>Reactive</span><span>Proactive</span><span>Autonomous</span>
+                                    <span>Reactive</span><span>Proactive</span><span>Preventive</span>
                                 </div>
                             </div>
                         </div>
@@ -745,6 +1070,8 @@
                         `).join("")}
                     </div>
                 </section>
+
+                ${playbookHtml(level)}
 
                 <div class="grid lg:grid-cols-2 gap-5">
                     <section class="rounded-3xl border border-slate-700 bg-slate-800/40 p-6 md:p-8">
@@ -787,8 +1114,8 @@
                         </div>
                     </div>
                     <div class="rounded-2xl border border-slate-700 bg-slate-900/40 px-5 py-4 mb-4">
-                        <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500 mb-2">${level >= 10 ? "Path to Level 10" : "What\u2019s needed to reach Level 10"}</p>
-                        ${level < 10 ? `<p class="text-sm text-slate-300 mb-3">Build a closed-loop Helix stack so signals move from observation to explained cause to automated fix without manual handoffs.</p>` : ""}
+                        <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500 mb-2">${level >= 10 ? "Path forward" : "Path to Preventive Operations"}</p>
+                        ${level < 10 ? `<p class="text-sm text-slate-300 mb-3">Move from reactive monitoring to proactive, then preventive operations with BMC Helix AIOps.</p>` : ""}
                         <ol class="space-y-1.5 text-sm text-slate-200">
                             ${path.map((line, index) => `<li>${level >= 10 ? esc(line) : `<span class="text-slate-500 font-bold mr-2">${index + 1}.</span>${esc(line)}`}</li>`).join("")}
                         </ol>
@@ -829,7 +1156,7 @@
                     <p class="mt-4 text-sm text-slate-400 leading-relaxed">
                         ${level >= 10
                             ? "Plan to walk one recent major incident with them. If that walk shows a hole the score smoothed over, that hole is the offer: coverage, a named exception, or a surge test. If the walkthrough is clean, say so."
-                            : "The number blends six answers, so the lead above is the default plan, not a diagnosis. On the call, follow the question they remember as weakest. A weak observability or service-context answer pulls BMC Helix Discovery and Operations Management forward. A weak event-noise or root-cause answer is Helix AIOps, HelixGPT, and ServiceOps. A weak remediation answer is Intelligent Automation, Automation for Servers, and Helix ITSM. Readiness at Siloed or Curious needs trusted data first. Grounding needs the decision layer. Piloting needs the loop closed."}
+                            : "The number blends seven answers, so the lead above is the default plan, not a diagnosis. On the call, follow the question they remember as weakest. A weak visibility, alert-noise, or service-context answer pulls unified visibility forward: discovery, reconciliation, event management. A weak root-cause or automation answer is the Level 2 play: service models, situations, AI agents, and ITSM integration. A weak prevention answer is the Level 3 play: predictive analytics and change risk prediction. AI agents at Not yet or Exploring need trusted data first. Assisting needs root cause they can act on. Piloting needs proof the agents are right."}
                     </p>
                 </section>
 
@@ -888,7 +1215,7 @@
                 return `<tr class="${active ? "bg-bmc-blue/15 text-white" : "text-slate-300"}">
                     <td class="px-3 py-2 font-bold">${level}</td>
                     <td class="px-3 py-2">${esc(profileFor(level).title)}</td>
-                    <td class="px-3 py-2">${esc(wedgeFor(level).label)}</td>
+                    <td class="px-3 py-2">${esc(profileFor(level).name)}</td>
                     <td class="px-3 py-2">${range}</td>
                     <td class="px-3 py-2">${esc(gapText(level))}</td>
                 </tr>`;
@@ -896,7 +1223,7 @@
             document.getElementById("math-table").innerHTML = `
                 <table class="w-full text-left text-sm border border-slate-700 rounded-xl overflow-hidden">
                     <thead class="bg-slate-900 text-[11px] uppercase tracking-wider text-slate-500">
-                        <tr><th class="px-3 py-2 font-bold">Level</th><th class="px-3 py-2 font-bold">Their title</th><th class="px-3 py-2 font-bold">Wedge</th><th class="px-3 py-2 font-bold">Points</th><th class="px-3 py-2 font-bold">Gap line</th></tr>
+                        <tr><th class="px-3 py-2 font-bold">Score</th><th class="px-3 py-2 font-bold">Their title</th><th class="px-3 py-2 font-bold">Phase</th><th class="px-3 py-2 font-bold">Points</th><th class="px-3 py-2 font-bold">Gap line</th></tr>
                     </thead>
                     <tbody class="divide-y divide-slate-800">${rows}</tbody>
                 </table>`;
@@ -923,16 +1250,21 @@
         function briefText(level) {
             const data = LEVELS[level];
             const profile = profileFor(level);
-            const wedge = wedgeFor(level);
+            const book = PLAYBOOK[profile.phase];
             const lines = [
-                `BMC Helix AIOps maturity \u2014 Level ${level} pre-call prep`,
+                `BMC Helix AIOps maturity \u2014 score ${level} pre-call prep`,
                 ``,
                 `Score: ${level}/10`,
                 `Title on their screen: ${profile.title}`,
                 `Screen copy: ${profile.desc}`,
                 `Gap line: ${gapText(level)}`,
-                `Wedge: ${wedge.label} (L${wedge.min}\u2013${wedge.max})`,
                 `Points: ${formatPoints(level)}`,
+                ``,
+                `Deck playbook \u2014 ${book.focus}:`,
+                book.message,
+                `Next step: ${book.nextStep}`,
+                `Proof-of-value KPIs: ${book.drivers.flatMap((driver) => driver.kpis).filter((kpi, index, all) => all.indexOf(kpi) === index).join(", ")}`,
+                ...(book.story ? [`Customer story: ${book.story.customer} \u2014 ${book.story.outcomes.join("; ")}`] : []),
                 ``,
                 `A way to open:`,
                 data.opener,
@@ -981,10 +1313,10 @@
             const host = document.getElementById("brief");
             if (state.mode === "all") {
                 host.innerHTML = `<div class="space-y-16">${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(article).join("")}</div>`;
-                document.title = "All levels · BMC Helix pre-call prep";
+                document.title = "All scores · BMC Helix pre-call prep";
             } else if (state.level) {
                 host.innerHTML = article(state.level);
-                document.title = `Level ${state.level} prep · BMC Helix`;
+                document.title = `Score ${state.level} prep · BMC Helix`;
             } else {
                 host.innerHTML = emptyState();
                 document.title = "Pre-call prep by score · BMC Helix";

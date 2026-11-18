@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BMC Helix AIOps Maturity Assessor</title>
-    <meta name="description" content="A 2-minute assessment of your AIOps maturity: observability, event noise, service context, root cause, remediation, and agentic AI readiness.">
+    <meta name="description" content="A 2-minute assessment that places your operations on the Helix AIOps Maturity Model: Reactive Monitoring, Proactive Operations, or Preventive Operations.">
     
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -87,6 +87,10 @@
             box-shadow: 0 0 20px rgba(255, 92, 40, 0.45);
             cursor: grab;
         }
+        /* No answer yet: hide the thumb so the middle position doesn't read as a choice. */
+        .scale-slider.unset { opacity: 0.6; }
+        .scale-slider.unset::-webkit-slider-thumb { opacity: 0; }
+        .scale-slider.unset::-moz-range-thumb { opacity: 0; }
         .scale-slider::-moz-range-track {
             height: 8px;
             border-radius: 9999px;
@@ -219,7 +223,7 @@
                 </div>
             </div>
             <div class="text-sm font-medium text-slate-500 hidden sm:block">
-                Helix AIOps Maturity Model
+                Helix AIOps Maturity Model: Reactive to Preventive
             </div>
         </div>
     </nav>
@@ -235,10 +239,10 @@
                     </div>
                 </div>
                 <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight mt-6">
-                    Are your IT operations a <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-bmc-orange">war room of alerts</span> <br class="hidden md:block"/> or a <span class="text-transparent bg-clip-text bg-gradient-to-r from-bmc-blue to-emerald-400">self-healing service?</span>
+                    Is your operations team <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-bmc-orange">firefighting outages</span> <br class="hidden md:block"/> or <span class="text-transparent bg-clip-text bg-gradient-to-r from-bmc-blue to-emerald-400">preventing them?</span>
                 </h1>
                 <p class="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
-                    Take this 2-minute assessment to discover your current AIOps Maturity Level and uncover the path to Level 10 autonomous operations.
+                    Take this 2-minute assessment to find where you sit on the Helix AIOps Maturity Model, from Reactive Monitoring to Proactive and Preventive Operations, and see your path forward.
                 </p>
                 <button onclick="startQuiz()" class="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white bg-bmc-blue rounded-full overflow-hidden transition-all hover:scale-105 hover:bg-bmc-blueHover hover:shadow-[0_0_40px_rgba(0,122,226,0.5)] focus:outline-none focus:ring-4 focus:ring-bmc-blue/50 z-10 cursor-pointer w-full max-w-[300px] md:w-auto mt-4">
                     <span class="mr-2">Start the Assessment</span>
@@ -307,14 +311,14 @@
             <div class="max-w-4xl mx-auto w-full px-4 py-12">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl font-bold text-white mb-4">Your Maturity Assessment Results</h2>
-                    <p class="text-slate-400">Based on your observability, correlation, and automation practices.</p>
+                    <p class="text-slate-400">Mapped to the three phases of the Helix AIOps Maturity Model.</p>
                 </div>
 
                 <div class="bg-slate-800 border border-slate-700 rounded-3xl p-8 md:p-12 mb-8 relative overflow-hidden shadow-2xl">
                     <div id="results-glow" class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 blur-[100px] opacity-20"></div>
                     
                     <div class="relative z-10 flex flex-col items-center text-center">
-                        <span class="text-sm font-bold tracking-widest uppercase text-slate-400 mb-6">Maturity Level</span>
+                        <span class="text-sm font-bold tracking-widest uppercase text-slate-400 mb-6">Maturity Score</span>
 
                         <div class="relative w-52 h-52 mb-8">
                             <svg viewBox="0 0 120 120" class="w-full h-full">
@@ -350,7 +354,7 @@
                             <div class="flex justify-between mt-3 text-[11px] sm:text-xs font-semibold uppercase tracking-wide text-slate-500">
                                 <span>Reactive</span>
                                 <span>Proactive</span>
-                                <span>Autonomous</span>
+                                <span>Preventive</span>
                             </div>
                             <div id="results-ticks" class="mt-6 grid grid-cols-10 gap-1.5"></div>
                         </div>
@@ -359,7 +363,7 @@
 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 flex-wrap">
                     <button onclick="showSolutions()" class="w-full sm:w-auto px-8 py-4 font-bold text-white bg-bmc-blue rounded-full hover:bg-bmc-blueHover transition-all shadow-lg hover:shadow-bmc-blue/30 flex items-center justify-center group">
-                        See How to Reach Level 10
+                        See Your Path Forward
                         <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
                     </button>
                     <button onclick="shareResults()" data-goatcounter-click="share-results" data-goatcounter-title="Share Results" class="w-full sm:w-auto px-8 py-4 font-bold text-white bg-slate-800 border border-slate-600 rounded-full hover:bg-slate-700 hover:border-bmc-blue/50 transition-all flex items-center justify-center">
@@ -383,10 +387,10 @@
                         <span class="font-bold tracking-wide uppercase text-xs">The Target State</span>
                     </div>
                     <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
-                        Path to <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Level 10</span>
+                        Path to <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Preventive Operations</span>
                     </h2>
                     <p class="text-lg text-slate-400 max-w-2xl mx-auto">
-                        Close the gap with a connected BMC Helix ecosystem — observe the whole service, know what matters, then act autonomously.
+                        From reactive monitoring to proactive, then preventive operations: unified visibility, faster root cause, then prevention.
                     </p>
                 </div>
 
@@ -401,11 +405,9 @@
                             </div>
                             <div id="maturity-wedge" class="w-full"></div>
                             <div class="mt-5 flex flex-wrap gap-3 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
-                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-500/80"></span>Siloed</span>
-                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500/80"></span>Consolidated</span>
-                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-bmc-blue/80"></span>Correlated</span>
-                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-cyan-400/80"></span>Predictive</span>
-                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-400/90"></span>Level 10</span>
+                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-500/80"></span>Level 1 · Reactive</span>
+                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-500/80"></span>Level 2 · Proactive</span>
+                                <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-400/90"></span>Level 3 · Preventive</span>
                             </div>
                         </div>
                     </div>
@@ -414,7 +416,7 @@
                         <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-3">Your journey</p>
                         <h3 id="solutions-journey-title" class="text-2xl md:text-3xl font-bold text-white mb-3">Moving toward autonomy</h3>
                         <p id="solutions-journey-desc" class="text-slate-400 leading-relaxed mb-6">
-                            Each capability layer below compounds the last — from seeing the whole service, to knowing what matters, to fixing it without a war room.
+                            Each phase builds on the last: unified visibility, then faster root cause, then prevention.
                         </p>
                         <div id="solutions-journey-steps" class="space-y-3"></div>
                     </div>
@@ -422,8 +424,8 @@
 
                 <div class="flex items-end justify-between gap-4 mb-6">
                     <div>
-                        <h3 class="text-xl font-bold text-white">Capability stack</h3>
-                        <p class="text-sm text-slate-500 mt-1">Three layers. One closed loop.</p>
+                        <h3 class="text-xl font-bold text-white">Opportunities by phase</h3>
+                        <p class="text-sm text-slate-500 mt-1">From reactive to preventive operations.</p>
                     </div>
                 </div>
 
@@ -433,9 +435,9 @@
 
                 <div class="text-center bg-gradient-to-br from-[#00509a]/40 to-slate-900 border border-bmc-blue/30 rounded-3xl p-8 md:p-10 relative overflow-hidden">
                     <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-bmc-orange blur-[100px] opacity-20"></div>
-                    <h3 class="text-2xl font-bold text-white mb-3 relative z-10">Ready to close the loop?</h3>
+                    <h3 class="text-2xl font-bold text-white mb-3 relative z-10">Ready to stop outages before they hit?</h3>
                     <p class="text-slate-400 mb-7 max-w-xl mx-auto relative z-10">
-                        Stop chasing alert storms. Turn observability into autonomous operations with BMC Helix.
+                        Move from firefighting to prevention with BMC Helix AIOps.
                     </p>
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-3 relative z-10">
                         <button onclick="window.open('https://www.helixops.ai', '_blank')" class="px-7 py-3 font-bold text-white bg-bmc-orange rounded-full hover:bg-bmc-orangeHover transition-all shadow-[0_0_20px_rgba(255,92,40,0.3)]">
@@ -460,97 +462,110 @@
     <!-- Application Logic -->
     <script>
         // --- DATA ---
+        // Questions follow the discovery questions in "Helix AIOps Maturity Messaging" (Levels 1-3).
         const QUESTIONS = [
             {
-                tag: "Observability",
-                icon: "radar",
+                tag: "Unified Visibility",
+                icon: "layers",
                 accent: "blue",
-                question: "How do you monitor your infrastructure, applications, and cloud?",
+                question: "How many monitoring tools do your teams use, and do they give you one view of operations?",
                 options: [
-                    { text: "Each team has its own tools and consoles; nobody sees the whole picture.", points: 1 },
-                    { text: "Events land in a consolidated console, with static thresholds we tune by hand.", points: 2 },
-                    { text: "Full-stack observability (metrics, logs, traces) with dynamic baselines, but not tied to business services.", points: 3 },
-                    { text: "Unified observability across the hybrid estate, mapped to business services, with anomaly detection and predictive alerts.", points: 4 }
+                    { text: "Each team has its own tools for logs, metrics, and monitoring. There is no shared context across teams.", points: 1 },
+                    { text: "Five to seven monitoring and observability tools. During incidents we copy and paste dashboards into Teams or Slack.", points: 2 },
+                    { text: "Data is consolidated into a single pane of glass, but engineers still correlate metrics, logs, traces, and changes by hand.", points: 3 },
+                    { text: "A single source of operational truth: metrics, logs, traces, events, and changes are linked and mapped to business services.", points: 4 }
                 ]
             },
             {
-                tag: "Event Noise",
+                tag: "Alert Noise",
                 icon: "bell-ring",
                 accent: "orange",
-                question: "On a bad day, how do your operators deal with alerts?",
+                question: "Are false positives and alert noise affecting your team's efficiency?",
                 options: [
-                    { text: "Alert storms. Thousands of events, and most get ignored.", points: 1 },
-                    { text: "Dedup and filter rules we write and maintain by hand.", points: 2 },
-                    { text: "ML correlation groups events into situations, but triage is still manual.", points: 3 },
-                    { text: "Noise is cut by 90%+; situations with probable cause are raised before users notice.", points: 4 }
+                    { text: "Constantly. Threshold alerts flood us, and the team is burned out from firefighting.", points: 1 },
+                    { text: "Event rules classify and de-duplicate alerts, but alert fatigue is still real.", points: 2 },
+                    { text: "AI groups redundant alerts into situations, and most of the noise is gone.", points: 3 },
+                    { text: "Noise is down 80%+, and every situation carries service impact and the context to act on it.", points: 4 }
                 ]
             },
             {
                 tag: "Service Context",
                 icon: "network",
                 accent: "cyan",
-                question: "When an alert fires, do you know which business service is affected?",
+                question: "When an alert fires, how quickly can you tell which business service is affected?",
                 options: [
-                    { text: "No. We find out when users call the service desk.", points: 1 },
-                    { text: "We check a static CMDB that is often out of date.", points: 2 },
-                    { text: "Discovered topology and service models stay current, but impact is assessed manually.", points: 3 },
-                    { text: "Dynamic service models score health and business impact in real time.", points: 4 }
+                    { text: "We usually can't. Users or the service desk tell us.", points: 1 },
+                    { text: "We look it up in a CMDB or inventory that is often out of date.", points: 2 },
+                    { text: "Continuous discovery and reconciled topology keep service models current for our critical services.", points: 3 },
+                    { text: "Every critical service is modeled across cloud and on-prem, so business impact and root cause are tied to a service instantly.", points: 4 }
                 ]
             },
             {
-                tag: "Root Cause",
+                tag: "Root Cause & MTTR",
                 icon: "search-check",
                 accent: "violet",
-                question: "When a major incident hits, how do you find the root cause?",
+                question: "Walk through a major incident, from detection to resolution. How long does it usually take?",
                 options: [
-                    { text: "A war-room bridge call where every team proves it isn't them.", points: 1 },
-                    { text: "Runbooks and tribal knowledge. It usually takes hours.", points: 2 },
-                    { text: "Probable-cause analysis and change correlation narrow it down quickly.", points: 3 },
-                    { text: "GenAI explains the situation, probable cause, related changes, and the recommended fix in minutes.", points: 4 }
+                    { text: "Incidents regularly run past a working day. We find out after the outage, and teams search several tools for the cause.", points: 1 },
+                    { text: "A few hours. SREs switch between tools and correlate data by hand to find the root cause.", points: 2 },
+                    { text: "AI-driven root cause analysis isolates the cause in minutes, using causal context and historical data.", points: 3 },
+                    { text: "AI agents analyze situations, find the root cause, and swarm the right experts. Major incidents stay within SLA.", points: 4 }
                 ]
             },
             {
-                tag: "Remediation",
+                tag: "Automation",
                 icon: "wrench",
                 accent: "emerald",
-                question: "Once you know the cause, how does the fix happen?",
+                question: "What level of automation sits between finding the cause and fixing it?",
                 options: [
-                    { text: "An engineer logs in and fixes it by hand; the ticket is updated later, if at all.", points: 1 },
-                    { text: "Some scripts, run ad hoc. Incidents are logged manually.", points: 2 },
-                    { text: "Event-triggered automation with approval steps; incidents are auto-created.", points: 3 },
-                    { text: "Closed loop: known issues auto-remediate, and incidents and changes are created, updated, and closed automatically.", points: 4 }
+                    { text: "Engineers log in and fix it by hand. The ticket is updated afterward, if at all.", points: 1 },
+                    { text: "Runbooks and scripts run ad hoc. Incidents are logged in ITSM by hand.", points: 2 },
+                    { text: "ITSM incidents are created automatically with operational context, and remediation runs with a human in the loop.", points: 3 },
+                    { text: "Self-healing: known issues remediate automatically using captured operational knowledge, including business-critical vulnerabilities.", points: 4 }
+                ]
+            },
+            {
+                tag: "Prevention",
+                icon: "shield-check",
+                accent: "blue",
+                question: "How effective are you at spotting issues before your customers do, and at predicting change risk?",
+                options: [
+                    { text: "We rarely do. Downtime and resource saturation are usually how we find out.", points: 1 },
+                    { text: "Threshold alerts catch obvious issues such as downtime, saturation, and availability.", points: 2 },
+                    { text: "Anomaly detection flags many issues before impact, but we don't forecast failures or score change risk.", points: 3 },
+                    { text: "Predictive analytics forecasts degradation and saturation, and change risk is predicted before we deploy to production.", points: 4 }
                 ]
             },
             {
                 type: "slider",
-                tag: "Agentic AI Readiness",
+                tag: "AI Agents",
                 icon: "bot",
                 accent: "orange",
-                question: "How ready are your operations for agentic AI (e.g. BMC HelixGPT agents) that investigate and act on incidents?",
+                question: "How far along are you in bringing LLMs and AI agents into your incident response?",
                 options: [
                     {
-                        label: "Siloed",
-                        text: "Our data is fragmented across tools and teams. An AI agent would have nothing trustworthy to reason over.",
+                        label: "Not yet",
+                        text: "AI isn't part of incident response. Operational knowledge lives in people's heads and old tickets.",
                         points: 1
                     },
                     {
-                        label: "Curious",
-                        text: "We're interested in GenAI, but monitoring, topology, and tickets still live in separate silos.",
+                        label: "Exploring",
+                        text: "We're looking at how LLMs or AI agents could fit our incident workflow, but haven't started.",
                         points: 2
                     },
                     {
-                        label: "Grounding",
-                        text: "Data is consolidated with some service context. AI could summarize incidents, but it couldn't safely act on them.",
+                        label: "Assisting",
+                        text: "GenAI summarizes incidents and brings up knowledge, but people still run every investigation.",
                         points: 3
                     },
                     {
                         label: "Piloting",
-                        text: "Service-aware correlation and automation exist, and we're evaluating agentic root cause and guided remediation (e.g. BMC HelixGPT).",
+                        text: "AI agents investigate incidents and find root cause, and a person reviews every action before it runs.",
                         points: 4
                     },
                     {
-                        label: "Agent-ready",
-                        text: "Trusted service models, low-noise situations, and governed automation let AI agents investigate and remediate with humans on the exceptions.",
+                        label: "Trusted",
+                        text: "AI agents investigate and remediate in production. We check their work and feed corrections back so they keep learning.",
                         points: 5
                     }
                 ]
@@ -558,11 +573,11 @@
         ];
 
         const MATURITY_LABELS = {
-            1: "Siloed",
-            2: "Consolidated",
-            3: "Correlated",
-            4: "Autonomous",
-            5: "Agent-ready"
+            1: "Reactive",
+            2: "Basic",
+            3: "Proactive",
+            4: "Preventive",
+            5: "Trusted"
         };
 
         const ACCENT_STYLES = {
@@ -598,66 +613,70 @@
             }
         };
 
+        // The three phases and their "opportunities for growth" come from the AIOps maturity messaging deck.
         const HELIX_SOLUTIONS = [
             {
-                category: "See the whole service",
-                stage: "Observe",
-                levelRange: "L1 → L4",
-                blurb: "One view of the hybrid estate, mapped to business services.",
-                icon: "radar",
+                category: "Unified visibility",
+                stage: "Reactive Monitoring",
+                levelRange: "Level 1 · Score 1–3",
+                blurb: "Consolidate tools and turn alert noise into actionable insight.",
+                icon: "layers",
                 accent: "border-bmc-blue/40",
                 iconColor: "text-bmc-blue",
                 iconBg: "bg-bmc-blue/10 border-bmc-blue/30",
                 items: [
-                    { title: "BMC Helix Discovery", desc: "Discover the hybrid estate and keep service topology current automatically.", url: "https://www.helixops.ai/products/bmc-helix-discovery.html" },
-                    { title: "BMC Helix Operations Management", desc: "One event and metric stream with dynamic baselines and anomaly detection.", url: "https://www.helixops.ai/products/aiops.html" }
+                    { title: "Continuous discovery", desc: "Automatically discover your assets and map their relationships.", url: "https://www.helixops.ai/products/bmc-helix-discovery.html" },
+                    { title: "Data reconciliation", desc: "Unify data from different topology sources into one source of truth.", url: "https://www.helixops.ai/products/aiops.html" },
+                    { title: "Event management", desc: "Classify and prioritize alerts, with the context to locate assets and notify owners.", url: "https://www.helixops.ai/products/aiops.html" },
+                    { title: "Time- and topology-based situations", desc: "Group related alerts by time and dependency to cut noise.", url: "https://www.helixops.ai/products/aiops.html" }
                 ]
             },
             {
-                category: "Know what matters",
-                stage: "Analyze",
-                levelRange: "L5 → L7",
-                blurb: "Cut noise into situations. Explain the cause by service impact.",
+                category: "Faster root cause",
+                stage: "Proactive Operations",
+                levelRange: "Level 2 · Score 4–7",
+                blurb: "Triage alerts and isolate root cause in minutes, then hand it to ITSM.",
                 icon: "brain",
                 accent: "border-violet-400/40",
                 iconColor: "text-violet-300",
                 iconBg: "bg-violet-400/10 border-violet-400/30",
                 items: [
-                    { title: "BMC Helix AIOps", desc: "Correlate events into situations, score service health, and pinpoint probable cause.", url: "https://www.helixops.ai/products/aiops.html" },
-                    { title: "BMC HelixGPT", desc: "Explain situations, related changes, and next-best actions in natural language.", url: "https://www.helixops.ai/products/helixgpt.html" },
-                    { title: "BMC Helix ServiceOps", desc: "Unite operations and service management on shared change and incident insight.", url: "https://www.helixops.ai/it-solutions/serviceops.html" }
+                    { title: "Service models", desc: "Map infrastructure to business services across cloud and on-prem.", url: "https://www.helixops.ai/products/aiops.html" },
+                    { title: "Noise reduction and situations", desc: "Group redundant alerts into a single situation.", url: "https://www.helixops.ai/products/aiops.html" },
+                    { title: "AI agents", desc: "Root Cause Finder, Situation Analyzer, and Ops Swarmer investigate alongside your team.", url: "https://www.helixops.ai/products/helixgpt.html" },
+                    { title: "ITSM integration", desc: "Create incidents automatically, with operational context attached.", url: "https://www.helixops.ai/products/bmc-helix-itsm.html" }
                 ]
             },
             {
-                category: "Close the loop",
-                stage: "Act",
-                levelRange: "L8 → L10",
-                blurb: "Remediate known issues and keep tickets current without handoffs.",
-                icon: "zap",
-                accent: "border-bmc-orange/40",
-                iconColor: "text-bmc-orange",
-                iconBg: "bg-bmc-orange/10 border-bmc-orange/30",
+                category: "Prevention",
+                stage: "Preventive Operations",
+                levelRange: "Level 3 · Score 8–10",
+                blurb: "Stop outages before they hit and build self-healing operations.",
+                icon: "shield-check",
+                accent: "border-emerald-400/40",
+                iconColor: "text-emerald-300",
+                iconBg: "bg-emerald-400/10 border-emerald-400/30",
                 items: [
-                    { title: "Intelligent Automation", desc: "Trigger governed remediation straight from situations and probable cause.", url: "https://www.helixops.ai/info/intelligent-automation.html" },
-                    { title: "Automation for Servers", desc: "Run fixes, configuration, and compliance at scale across hybrid estates.", url: "https://www.helixops.ai/products/truesight-server-automation.html" },
-                    { title: "BMC Helix ITSM", desc: "Auto-create, update, and close incidents and changes as work completes.", url: "https://www.helixops.ai/products/bmc-helix-itsm.html" },
-                    { title: "Innovation Studio", desc: "Low-code workflows tailored to your operating model.", url: "https://www.helixops.ai/products/bmc-helix-itsm.html" }
+                    { title: "Predictive analytics", desc: "Forecast service degradation and resource saturation.", url: "https://www.helixops.ai/products/aiops.html" },
+                    { title: "Change risk prediction", desc: "Predict when a change might cause a failure in production.", url: "https://www.helixops.ai/it-solutions/serviceops.html" },
+                    { title: "Vulnerability visibility", desc: "See and remediate vulnerabilities beside your critical services.", url: "https://www.helixops.ai/it-solutions/serviceops.html" },
+                    { title: "Automated remediation", desc: "Self-healing fixes tied to operational knowledge.", url: "https://www.helixops.ai/info/intelligent-automation.html" }
                 ]
             }
         ];
 
+        // Score bands match the three deck phases.
         const MATURITY_WEDGES = [
-            { id: 1, label: "Siloed", sub: "L1–2", min: 1, max: 2, color: "#ef4444" },
-            { id: 2, label: "Consolidated", sub: "L3–4", min: 3, max: 4, color: "#f59e0b" },
-            { id: 3, label: "Correlated", sub: "L5–6", min: 5, max: 6, color: "#007AE2" },
-            { id: 4, label: "Predictive", sub: "L7–8", min: 7, max: 8, color: "#22d3ee" },
-            { id: 5, label: "Autonomous", sub: "L9–10", min: 9, max: 10, color: "#34d399" }
+            { id: 1, label: "Reactive Monitoring", sub: "Level 1 · Score 1–3", min: 1, max: 3, color: "#ef4444" },
+            { id: 2, label: "Proactive Operations", sub: "Level 2 · Score 4–7", min: 4, max: 7, color: "#f59e0b" },
+            { id: 3, label: "Preventive Operations", sub: "Level 3 · Score 8–10", min: 8, max: 10, color: "#34d399" }
         ];
 
         // --- STATE ---
         let currentQ = 0;
         let score = 0;
         let selectingOption = false;
+        let sliderChosen = false;
         let resultLevel = 1;
         let resultTitle = "";
         let resultDesc = "";
@@ -744,15 +763,16 @@
             }).join('');
 
             if (q.type === 'slider') {
+                // Start with nothing selected so an untouched slider can't silently score the middle option.
                 const midIndex = Math.floor((q.options.length - 1) / 2);
-                const initial = q.options[midIndex];
+                sliderChosen = false;
                 container.className = 'flex flex-col gap-6';
                 container.innerHTML = `
                     <div class="rounded-2xl border border-slate-600/80 bg-gradient-to-b from-slate-800 to-slate-900 p-6 md:p-8 text-center shadow-inner">
                         <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Your readiness</p>
-                        <div id="slider-value" class="text-6xl font-black text-bmc-orange mb-2 leading-none">${initial.points}</div>
-                        <div id="slider-label" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-bmc-orange/15 text-bmc-orange border border-bmc-orange/25 mb-4">${initial.label || MATURITY_LABELS[initial.points]}</div>
-                        <p id="slider-description" class="text-slate-300 text-lg leading-relaxed min-h-[4.5rem]">${initial.text}</p>
+                        <div id="slider-value" class="text-6xl font-black text-slate-600 mb-2 leading-none">?</div>
+                        <div id="slider-label" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-700/40 text-slate-400 border border-slate-600 mb-4">Not chosen yet</div>
+                        <p id="slider-description" class="text-slate-400 text-lg leading-relaxed min-h-[4.5rem]">Drag the slider or tap a stage below to pick the one that fits you best.</p>
                     </div>
                     <div class="px-1 md:px-4">
                         <input
@@ -762,17 +782,23 @@
                             max="${q.options.length - 1}"
                             value="${midIndex}"
                             step="1"
-                            class="scale-slider"
+                            class="scale-slider unset"
                             oninput="updateSliderDescription(this.value)"
-                            aria-label="Agentic AI readiness scale"
+                            aria-label="AI agents readiness scale"
                         >
-                        <div class="flex justify-between mt-3 text-sm font-bold text-slate-500 px-1">
-                            ${q.options.map(opt => `<span class="slider-tick">${opt.points}</span>`).join('')}
+                        <div class="flex justify-between mt-3 gap-1">
+                            ${q.options.map((opt, i) => `
+                                <button type="button" onclick="pickSliderOption(${i})" class="slider-tick flex-1 flex flex-col items-center gap-0.5 rounded-lg py-1 text-slate-500 hover:text-white hover:bg-slate-800/80 transition-colors">
+                                    <span class="text-sm font-bold">${opt.points}</span>
+                                    <span class="text-[10px] font-semibold uppercase tracking-wide leading-tight text-center">${opt.label}</span>
+                                </button>`).join('')}
                         </div>
                     </div>
                     <button
+                        id="slider-confirm"
                         onclick="confirmSlider()"
-                        class="self-center mt-1 inline-flex items-center justify-center px-8 py-3.5 font-bold text-white bg-bmc-blue rounded-full transition-all hover:bg-bmc-blueHover hover:scale-105 focus:outline-none focus:ring-4 focus:ring-bmc-blue/50 shadow-[0_0_24px_rgba(0,122,226,0.25)]"
+                        disabled
+                        class="self-center mt-1 inline-flex items-center justify-center px-8 py-3.5 font-bold text-white bg-bmc-blue rounded-full transition-all hover:bg-bmc-blueHover hover:scale-105 focus:outline-none focus:ring-4 focus:ring-bmc-blue/50 shadow-[0_0_24px_rgba(0,122,226,0.25)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-bmc-blue"
                     >
                         Lock in &amp; finish
                         <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
@@ -816,21 +842,35 @@
         function updateSliderDescription(index) {
             const q = QUESTIONS[currentQ];
             const opt = q.options[Number(index)];
+            sliderChosen = true;
             const valueEl = document.getElementById('slider-value');
             valueEl.textContent = opt.points;
+            valueEl.className = 'text-6xl font-black text-bmc-orange mb-2 leading-none';
             valueEl.classList.remove('slider-pulse');
             void valueEl.offsetWidth;
             valueEl.classList.add('slider-pulse');
-            document.getElementById('slider-label').textContent = opt.label || MATURITY_LABELS[opt.points];
-            document.getElementById('slider-description').textContent = opt.text;
+            const labelEl = document.getElementById('slider-label');
+            labelEl.textContent = opt.label || MATURITY_LABELS[opt.points];
+            labelEl.className = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-bmc-orange/15 text-bmc-orange border border-bmc-orange/25 mb-4';
+            const descEl = document.getElementById('slider-description');
+            descEl.textContent = opt.text;
+            descEl.className = 'text-slate-300 text-lg leading-relaxed min-h-[4.5rem]';
+            document.getElementById('scale-slider').classList.remove('unset');
+            document.getElementById('slider-confirm').disabled = false;
 
             document.querySelectorAll('.slider-tick').forEach((tick, i) => {
-                tick.className = `slider-tick ${i === Number(index) ? 'text-bmc-orange' : 'text-slate-500'}`;
+                tick.classList.toggle('text-bmc-orange', i === Number(index));
+                tick.classList.toggle('text-slate-500', i !== Number(index));
             });
         }
 
+        function pickSliderOption(index) {
+            document.getElementById('scale-slider').value = String(index);
+            updateSliderDescription(index);
+        }
+
         function confirmSlider() {
-            if (selectingOption) return;
+            if (selectingOption || !sliderChosen) return;
             const slider = document.getElementById('scale-slider');
             const opt = QUESTIONS[currentQ].options[Number(slider.value)];
             selectOption(opt.points);
@@ -876,8 +916,50 @@
             }, 2000);
         }
 
+        // Deck phases. Score bands: 1–3, 4–7, 8–10.
+        const PHASES = [
+            {
+                level: 1,
+                name: "Reactive Monitoring",
+                desc: "Your teams are firefighting: siloed tools per team, threshold alerts, and investigations that mean pasting dashboards into chat. Incidents regularly run past a working day. The opportunity is unified visibility. Consolidate tools and turn alert noise into actionable insight.",
+                stroke: "#ef4444",
+                fillClass: "bg-red-500",
+                tickActive: "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.55)]"
+            },
+            {
+                level: 2,
+                name: "Proactive Operations",
+                desc: "You have modern telemetry, but tool sprawl and alert fatigue keep MTTR at hours, and SREs switch between tools to investigate by hand. The opportunity is faster root cause: service models, situations, and AI agents that isolate the cause in minutes and hand it to ITSM.",
+                stroke: "#f59e0b",
+                fillClass: "bg-amber-500",
+                tickActive: "bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.55)]"
+            },
+            {
+                level: 3,
+                name: "Preventive Operations",
+                desc: "You run a mature, reliability-focused operation. The opportunity now is prevention: forecast degradation, predict change risk, remediate business-critical vulnerabilities, and trust AI agents to investigate and fix issues in production.",
+                stroke: "#10b981",
+                fillClass: "bg-emerald-500",
+                tickActive: "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.55)]"
+            }
+        ];
+
+        function phaseFor(level) {
+            if (level <= 3) return PHASES[0];
+            if (level <= 7) return PHASES[1];
+            return PHASES[2];
+        }
+
+        function phaseTitle(phase) {
+            return `Maturity Level ${phase.level} · ${phase.name}`;
+        }
+
+        function gapLine(level) {
+            return level >= 10 ? "Target reached" : `${10 - level} to go to 10`;
+        }
+
         function calculateResults() {
-            const maxScore = QUESTIONS.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.points)), 0); // 5 × 4 + 1 × 5 = 25
+            const maxScore = QUESTIONS.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.points)), 0); // 6 × 4 + 1 × 5 = 29
             const percentage = score / maxScore;
             const level = Math.max(1, Math.round(percentage * 10));
             const circumference = 2 * Math.PI * 52;
@@ -885,37 +967,18 @@
 
             document.getElementById('results-level').textContent = level;
 
-            let title = "", desc = "", stroke = "", fillClass = "", tickActive = "";
-            if (level <= 3) {
-                title = "Siloed and Reactive";
-                desc = "Your teams learn about problems from users, then chase alert storms across disconnected tools. Without service context, AI has nothing trustworthy to reason over — every major incident becomes a war room.";
-                stroke = "#ef4444";
-                fillClass = "bg-red-500";
-                tickActive = "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.55)]";
-            } else if (level <= 7) {
-                title = "Correlated but Human-Driven";
-                desc = "You have real tooling and some noise reduction, but people still stitch together context, find root cause, and run the fix. Your MTTR is set by who is on call, not by your platform.";
-                stroke = "#f59e0b";
-                fillClass = "bg-amber-500";
-                tickActive = "bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.55)]";
-            } else {
-                title = "Approaching Autonomous Operations";
-                desc = "Excellent work. Observability, service context, and automation are connected — you’re close to agentic AIOps: predicting issues, explaining root cause, and remediating with minimal human touch.";
-                stroke = "#10b981";
-                fillClass = "bg-emerald-500";
-                tickActive = "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.55)]";
-            }
+            const phase = phaseFor(level);
+            const title = phaseTitle(phase);
+            const desc = phase.desc;
 
             resultTitle = title;
             resultDesc = desc;
             document.getElementById('results-title').textContent = title;
             document.getElementById('results-desc').textContent = desc;
-            document.getElementById('results-gap').textContent = level >= 10
-                ? "Target reached"
-                : `${10 - level} level${10 - level === 1 ? '' : 's'} to Level 10`;
+            document.getElementById('results-gap').textContent = gapLine(level);
 
             const ring = document.getElementById('maturity-ring');
-            ring.style.stroke = stroke;
+            ring.style.stroke = phase.stroke;
             ring.style.strokeDasharray = String(circumference);
             ring.style.strokeDashoffset = String(circumference);
             // Force reflow so the ring animates from empty each time
@@ -923,7 +986,7 @@
             ring.style.strokeDashoffset = String(circumference * (1 - level / 10));
 
             const spectrum = document.getElementById('maturity-spectrum-fill');
-            spectrum.className = `maturity-spectrum-fill absolute inset-y-0 left-0 rounded-full ${fillClass}`;
+            spectrum.className = `maturity-spectrum-fill absolute inset-y-0 left-0 rounded-full ${phase.fillClass}`;
             spectrum.style.width = '0%';
             void spectrum.offsetWidth;
             spectrum.style.width = `${level * 10}%`;
@@ -933,34 +996,34 @@
                 const n = i + 1;
                 const active = n <= level;
                 return `<div class="flex flex-col items-center gap-1">
-                    <div class="h-2.5 w-full rounded-full ${active ? tickActive : 'bg-slate-700'}"></div>
+                    <div class="h-2.5 w-full rounded-full ${active ? phase.tickActive : 'bg-slate-700'}"></div>
                     <span class="text-[10px] font-bold ${active ? 'text-white' : 'text-slate-600'}">${n}</span>
                 </div>`;
             }).join('');
 
-            document.getElementById('results-glow').className = `absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 blur-[100px] opacity-20 ${fillClass}`;
+            document.getElementById('results-glow').className = `absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 blur-[100px] opacity-20 ${phase.fillClass}`;
         }
 
-        function pathToLevel10Summary(level) {
+        function pathSummary(level) {
             if (level >= 10) {
                 return [
-                    `Path to Level 10:`,
-                    `You're already at the target state. Keep the closed loop healthy — service-aware observability, low-noise situations with explained cause, and governed auto-remediation.`
+                    `Path forward:`,
+                    `You've reached the top of the model. Keep prevention healthy: predictive analytics, change risk prediction, and AI agents you check and keep teaching.`
                 ];
             }
 
             const focus = [];
-            if (level < 5) {
-                focus.push(`1. Observe — unified observability and live service models (BMC Helix Discovery, BMC Helix Operations Management)`);
+            if (level < 4) {
+                focus.push(`1. Unified visibility — consolidate tools and turn alert noise into insight (continuous discovery, data reconciliation, event management, situations)`);
             }
             if (level < 8) {
-                focus.push(`${focus.length + 1}. Analyze — correlate noise into situations and explain root cause (BMC Helix AIOps, BMC HelixGPT, BMC Helix ServiceOps)`);
+                focus.push(`${focus.length + 1}. Faster root cause — triage and isolate root cause in minutes (service models, noise reduction, AI agents, ITSM integration)`);
             }
-            focus.push(`${focus.length + 1}. Act — automate remediation and ITSM handoffs (Intelligent Automation, Automation for Servers, BMC Helix ITSM)`);
+            focus.push(`${focus.length + 1}. Prevention — stop outages before they hit (predictive analytics, change risk prediction, vulnerability visibility, automated remediation)`);
 
             return [
-                `What's needed to reach Level 10:`,
-                `Build a closed-loop Helix stack so signals move from observation to explained cause to automated fix without manual handoffs:`,
+                `Path to Preventive Operations:`,
+                `Move from reactive monitoring to proactive, then preventive operations with BMC Helix AIOps:`,
                 ``,
                 ...focus
             ];
@@ -972,16 +1035,16 @@
             const desc = resultDesc || document.getElementById('results-desc').textContent;
             const pageUrl = window.location.href.split('#')[0];
 
-            const subject = `My BMC Helix AIOps Maturity Result: Level ${level}/10`;
+            const subject = `My BMC Helix AIOps Maturity Result: ${phaseFor(level).name} (score ${level}/10)`;
             const body = [
                 `I just completed the BMC Helix AIOps Maturity Assessor.`,
                 ``,
-                `Maturity Level: ${level} / 10`,
-                `Profile: ${title}`,
+                `${title}`,
+                `Maturity score: ${level} / 10`,
                 ``,
                 desc,
                 ``,
-                ...pathToLevel10Summary(level),
+                ...pathSummary(level),
                 ``,
                 `Take the assessment: ${pageUrl}`,
                 `Learn more: https://www.helixops.ai`
@@ -997,18 +1060,16 @@
             const padL = 12;
             const padR = 12;
             const baseY = 200;
-            const n = MATURITY_WEDGES.length;
-            const segW = (w - padL - padR) / n;
+            const span = w - padL - padR;
 
-            // Heights grow left → right (wedge / maturity ramp)
-            const heightFor = (index) => 48 + index * 28;
-            const polys = MATURITY_WEDGES.map((stage, i) => {
-                const x0 = padL + i * segW;
-                const x1 = padL + (i + 1) * segW;
-                const h0 = heightFor(i);
-                const h1 = heightFor(i + 1);
-                const y0 = baseY - h0;
-                const y1 = baseY - h1;
+            // Segment widths follow each phase's score band; heights ramp with the score.
+            const xFor = (s) => padL + (s / 10) * span;
+            const heightAt = (s) => 48 + (s / 10) * 120;
+            const polys = MATURITY_WEDGES.map((stage) => {
+                const x0 = xFor(stage.min - 1);
+                const x1 = xFor(stage.max);
+                const h0 = heightAt(stage.min - 1);
+                const h1 = heightAt(stage.max);
                 const state = level > stage.max ? 'is-past' : (level >= stage.min ? 'is-current' : 'is-ahead');
                 const fillOpacity = state === 'is-current' ? 0.95 : state === 'is-past' ? 0.5 : 0.2;
                 const midX = (x0 + x1) / 2;
@@ -1017,7 +1078,7 @@
                 return `
                     <g class="wedge-segment ${state}">
                         <path
-                            d="M ${x0} ${baseY} L ${x0} ${y0} L ${x1} ${y1} L ${x1} ${baseY} Z"
+                            d="M ${x0} ${baseY} L ${x0} ${baseY - h0} L ${x1} ${baseY - h1} L ${x1} ${baseY} Z"
                             fill="${stage.color}"
                             fill-opacity="${fillOpacity}"
                             stroke="#0f172a"
@@ -1029,39 +1090,41 @@
                 `;
             }).join('');
 
-            const markerX = padL + ((level - 0.5) / 10) * (w - padL - padR);
-            const markerH = 48 + ((level - 1) / 9) * (heightFor(n) - 48);
+            const markerX = xFor(level - 0.5);
+            const markerH = heightAt(level - 0.5);
+            const labelAnchor = level >= 9 ? 'end' : level <= 1 ? 'start' : 'middle';
             const marker = `
                 <g>
                     <line x1="${markerX}" y1="${baseY - markerH - 8}" x2="${markerX}" y2="${baseY}" stroke="#FF5C28" stroke-width="2.5" stroke-dasharray="5 4"/>
                     <circle cx="${markerX}" cy="${baseY - markerH - 12}" r="8" fill="#FF5C28" stroke="#fff" stroke-width="2"/>
-                    <text x="${markerX}" y="${baseY - markerH - 26}" text-anchor="middle" fill="#FF5C28" font-size="11" font-weight="800">YOU · L${level}</text>
+                    <text x="${markerX}" y="${baseY - markerH - 26}" text-anchor="${labelAnchor}" fill="#FF5C28" font-size="11" font-weight="800">YOU · ${level}/10</text>
                 </g>
             `;
 
             host.innerHTML = `
-                <svg viewBox="0 0 ${w} ${h}" class="w-full h-auto" role="img" aria-label="AIOps maturity wedge from siloed to autonomous">
+                <svg viewBox="0 0 ${w} ${h}" class="w-full h-auto" role="img" aria-label="AIOps maturity from reactive monitoring to preventive operations">
                     <line x1="${padL}" y1="${baseY}" x2="${w - padR}" y2="${baseY}" stroke="#334155" stroke-width="2"/>
                     ${polys}
                     ${marker}
-                    <text x="${w - padR}" y="20" text-anchor="end" fill="#34d399" font-size="11" font-weight="700">TARGET · LEVEL 10</text>
                 </svg>
             `;
 
-            document.getElementById('wedge-you-badge').textContent = `You: L${level}`;
+            document.getElementById('wedge-you-badge').textContent = `You: Level ${phaseFor(level).level} · ${level}/10`;
         }
 
         function showSolutions() {
             const level = resultLevel || 1;
             renderMaturityWedge(level);
 
-            const gap = Math.max(0, 10 - level);
-            document.getElementById('solutions-journey-title').textContent = gap === 0
-                ? "You're at the target state"
-                : `${gap} level${gap === 1 ? '' : 's'} to Level 10 autonomy`;
-            document.getElementById('solutions-journey-desc').textContent = gap === 0
-                ? "Maintain the closed loop — service-aware observability, low-noise situations with explained cause, and governed auto-remediation."
-                : "Climb the wedge by stacking Helix capabilities: see the whole service, know what matters, then close the loop without handoffs.";
+            const phase = phaseFor(level);
+            document.getElementById('solutions-journey-title').textContent = level >= 10
+                ? "You're at the top of the model"
+                : phase.level === 3
+                    ? "Make prevention the default"
+                    : `From ${phase.name} to ${PHASES[phase.level].name}`;
+            document.getElementById('solutions-journey-desc').textContent = level >= 10
+                ? "Keep prevention healthy: forecast failures, predict change risk, and keep checking and teaching the AI agents that investigate and fix for you."
+                : "Each phase builds on the last: unified visibility, then faster root cause, then prevention.";
 
             document.getElementById('solutions-journey-steps').innerHTML = HELIX_SOLUTIONS.map((sol, i) => `
                 <div class="flex items-start gap-3 rounded-2xl border border-slate-700/80 bg-slate-900/40 px-4 py-3">
