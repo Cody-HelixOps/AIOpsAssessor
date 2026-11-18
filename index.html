@@ -166,6 +166,14 @@
             background: #007AE2;
             color: white;
         }
+        .quiz-option.previous {
+            border-color: rgba(0, 122, 226, 0.7);
+            background: rgba(0, 122, 226, 0.1);
+        }
+        .quiz-option.previous .quiz-letter {
+            background: #007AE2;
+            color: white;
+        }
         .quiz-option.dimmed {
             opacity: 0.35;
             transform: scale(0.98);
@@ -289,6 +297,17 @@
                             <!-- Options injected here via JS -->
                         </div>
                     </div>
+                </div>
+                <div class="mt-6">
+                    <button
+                        id="quiz-back"
+                        type="button"
+                        onclick="previousQuestion()"
+                        class="invisible inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold text-slate-300 border border-slate-700 bg-slate-800/60 hover:text-white hover:border-slate-500 hover:bg-slate-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bmc-blue/60"
+                    >
+                        <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
+                        Previous question
+                    </button>
                 </div>
             </div>
         </section>
@@ -675,6 +694,7 @@
         // --- STATE ---
         let currentQ = 0;
         let score = 0;
+        let answers = []; // option index chosen for each question
         let selectingOption = false;
         let sliderChosen = false;
         let resultLevel = 1;
@@ -713,6 +733,7 @@
             }
             currentQ = 0;
             score = 0;
+            answers = [];
             selectingOption = false;
             renderQuestion();
             switchView('view-quiz');
@@ -762,6 +783,9 @@
                 }" title="Question ${i + 1}"></div>`;
             }).join('');
 
+            document.getElementById('quiz-back').classList.toggle('invisible', currentQ === 0);
+            const previous = answers[currentQ];
+
             if (q.type === 'slider') {
                 // Start with nothing selected so an untouched slider can't silently score the middle option.
                 const midIndex = Math.floor((q.options.length - 1) / 2);
@@ -804,6 +828,7 @@
                         <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
                     </button>
                 `;
+                if (previous !== undefined) pickSliderOption(previous);
                 lucide.createIcons();
                 return;
             }
@@ -812,8 +837,8 @@
             container.innerHTML = q.options.map((opt, i) => `
                 <button
                     type="button"
-                    onclick="selectOption(${opt.points}, this)"
-                    class="quiz-option text-left p-5 md:p-6 bg-slate-900/70 hover:bg-slate-800/90 border border-slate-700 hover:border-bmc-blue/60 rounded-2xl transition-all duration-300 group flex flex-col gap-4 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-bmc-blue/60"
+                    onclick="selectOption(${i}, this)"
+                    class="quiz-option ${i === previous ? 'previous' : ''} text-left p-5 md:p-6 bg-slate-900/70 hover:bg-slate-800/90 border border-slate-700 hover:border-bmc-blue/60 rounded-2xl transition-all duration-300 group flex flex-col gap-4 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-bmc-blue/60"
                     style="animation-delay: ${i * 70}ms"
                 >
                     <div class="flex items-center justify-between gap-3">
@@ -872,24 +897,32 @@
         function confirmSlider() {
             if (selectingOption || !sliderChosen) return;
             const slider = document.getElementById('scale-slider');
-            const opt = QUESTIONS[currentQ].options[Number(slider.value)];
-            selectOption(opt.points);
+            selectOption(Number(slider.value));
         }
 
-        function selectOption(points, btn) {
+        function previousQuestion() {
+            if (selectingOption || currentQ === 0) return;
+            currentQ--;
+            renderQuestion();
+        }
+
+        function selectOption(index, btn) {
             if (selectingOption) return;
             selectingOption = true;
 
             if (btn) {
                 const siblings = btn.parentElement.querySelectorAll('.quiz-option');
                 siblings.forEach(el => {
+                    el.classList.remove('previous');
                     if (el === btn) el.classList.add('selected');
                     else el.classList.add('dimmed');
                 });
             }
 
             setTimeout(() => {
-                score += points;
+                // Store the choice, then rebuild the total so going back and changing an answer never double-counts.
+                answers[currentQ] = index;
+                score = answers.reduce((sum, a, i) => sum + QUESTIONS[i].options[a].points, 0);
                 selectingOption = false;
                 if (currentQ < QUESTIONS.length - 1) {
                     currentQ++;
