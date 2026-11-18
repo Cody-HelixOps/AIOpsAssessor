@@ -380,7 +380,7 @@
                 question: "How far along are you in bringing LLMs and AI agents into your incident response?",
                 options: [
                     {
-                        label: "Not yet",
+                        label: "Assessing",
                         text: "AI isn't part of incident response. Operational knowledge lives in people's heads and old tickets.",
                         points: 1
                     },
@@ -500,7 +500,7 @@
                     "Incidents regularly run past a working day; teams search several tools for the cause",
                     "Engineers fix it by hand; the ticket is updated afterward, if at all",
                     "They rarely spot issues early; downtime and saturation are how they find out",
-                    "Not yet — AI isn't part of incident response"
+                    "Assessing — AI isn't part of incident response yet"
                 ],
                 points: [
                     "Treat the score as a straight answer, not a verdict. They told the truth, which makes the first project obvious.",
@@ -716,7 +716,7 @@
             9: {
                 note: "A 9 is a Level 3 conversation. Green, Preventive Operations, and the line says 1 to go to 10. Find the one answer short of the top before you propose anything.",
                 opener: "A 9 is a Level 3 conversation: Preventive Operations. Almost every answer is at the top, and one isn’t — often the loop still has a person at the fix, or the agents are still Piloting rather than Trusted. The line says 1 to go to 10. Tell me which question you hesitated on.",
-                picture: "Twenty-five to twenty-seven points. A clean sweep of the six operating questions plus the slider at Not yet is 25, a 9. Top answers plus Assisting is 27, also a 9. The miss is specific. Find it before you propose a platform.",
+                picture: "Twenty-five to twenty-seven points. A clean sweep of the six operating questions plus the slider at Assessing is 25, a 9. Top answers plus Assisting is 27, also a 9. The miss is specific. Find it before you propose a platform.",
                 likely: [
                     "A single source of operational truth: metrics, logs, traces, events, and changes are linked and mapped to business services.",
                     "Noise is down 80%+, and every situation carries service impact and the context to act on it.",
@@ -1156,7 +1156,7 @@
                     <p class="mt-4 text-sm text-slate-400 leading-relaxed">
                         ${level >= 10
                             ? "Plan to walk one recent major incident with them. If that walk shows a hole the score smoothed over, that hole is the offer: coverage, a named exception, or a surge test. If the walkthrough is clean, say so."
-                            : "The number blends seven answers, so the lead above is the default plan, not a diagnosis. On the call, follow the question they remember as weakest. A weak visibility, alert-noise, or service-context answer pulls unified visibility forward: discovery, reconciliation, event management. A weak root-cause or automation answer is the Level 2 play: service models, situations, AI agents, and ITSM integration. A weak prevention answer is the Level 3 play: predictive analytics and change risk prediction. AI agents at Not yet or Exploring need trusted data first. Assisting needs root cause they can act on. Piloting needs proof the agents are right."}
+                            : "The number blends seven answers, so the lead above is the default plan, not a diagnosis. On the call, follow the question they remember as weakest. A weak visibility, alert-noise, or service-context answer pulls unified visibility forward: discovery, reconciliation, event management. A weak root-cause or automation answer is the Level 2 play: service models, situations, AI agents, and ITSM integration. A weak prevention answer is the Level 3 play: predictive analytics and change risk prediction. AI agents at Assessing or Exploring need trusted data first. Assisting needs root cause they can act on. Piloting needs proof the agents are right."}
                     </p>
                 </section>
 
